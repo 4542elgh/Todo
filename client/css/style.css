@@ -1,56 +1,42 @@
-#mainBody {
+#stickyHeader {
+    position: absolute;
+    text-align: center;
     background-color: black;
-    animation: random-colors 30s;
-}
-
-#h1Test {
     color: white;
-    text-align: center; 
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 200px;
-}
+    right: 10%;
+    left: 10%;
 
-a:link {
-    color: white;
-}
-
-a:hover {
-    background-color: white;
-    transition: background-color 5s;
 }
 
 @keyframes random-colors {
-    0%{
+    0% {
         background: black;
     }
     7% {
         background: red;
     }
-    14%{
+    14% {
         background: orange;
     }
-    28%{
+    28% {
         background: yellow;
     }
-    35%{
+    35% {
         background: greenyellow;
     }
-    42%{
+    42% {
         background: green;
     }
-    56%{
+    56% {
         background: blue;
     }
-    70%{
+    70% {
         background: indigo;
     }
-    84%{
+    84% {
         background: violet;
     }
-    100%{
+    100% {
         background: white;
     }
 }
