@@ -1,6 +1,7 @@
-*
-
 !*.json
 !*.js
 !README.md
 !.gitignore
+!server/
+!server/**
+!client/css/**
