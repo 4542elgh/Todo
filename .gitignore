@@ -1,7 +1,4 @@
-!*.json
-!*.js
-!README.md
-!.gitignore
-!server/
-!server/**
-!client/css/**
+node_modules/*
+.idea/*
+.vscode/*
+__MACOSX/*
