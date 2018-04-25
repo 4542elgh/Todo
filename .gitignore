@@ -1,0 +1,6 @@
+*
+
+!*.json
+!*.js
+!README.md
+!.gitignore
