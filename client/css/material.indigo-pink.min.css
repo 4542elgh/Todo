@@ -4555,6 +4555,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
   letter-spacing: .02em;
   font-weight: 400;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .mdl-layout-spacer {
@@ -4616,12 +4617,14 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
 .mdl-layout__drawer>.mdl-layout__title, .mdl-layout__drawer>.mdl-layout-title {
   line-height: 64px;
   padding-left: 40px;
+  text-align: center;
 }
 
 @media screen and (max-width:1024px) {
   .mdl-layout__drawer>.mdl-layout__title, .mdl-layout__drawer>.mdl-layout-title {
     line-height: 56px;
     padding-left: 16px;
+    text-align: center;
   }
 }
 
@@ -4867,6 +4870,7 @@ fieldset[disabled] .mdl-checkbox .mdl-checkbox__ripple-container .mdl-ripple, .m
   height: 64px;
   margin: 0;
   padding: 0 40px 0 80px;
+  text-align: center;
 }
 
 .mdl-layout--no-drawer-button .mdl-layout__header-row {

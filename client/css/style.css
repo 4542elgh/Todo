@@ -8,6 +8,15 @@
 
 }
 
+.rowPadding3 {
+    margin-top:3%;
+}
+
+.textCentering {
+    text-align: center;
+    align-items: center;
+}
+
 @keyframes random-colors {
     0% {
         background: black;
