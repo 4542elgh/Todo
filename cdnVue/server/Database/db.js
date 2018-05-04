@@ -53,21 +53,24 @@ const createProject = (projectName) => {
     // find if username is in db
     return findProject(projectName)
         .then(projectFound => {
-            if (projectFound)
+            if (projectFound) {
                 throw new Error('Project already exists')
-
+            }
             //return the project object we will insert into the database
+        else{
             return {
                 name: projectName,
                 todos: []
+                }
             }
         })
         .then(project => {
             //create the project
             Projects.create(project)
+            return project
         })
-        .then((name, todos) => {
-            return { name, todos }
+        .then(project => {
+            return { project[name], project[todos] }
         })
         .catch(err => {
             console.log(err)
