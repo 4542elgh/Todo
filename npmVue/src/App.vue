@@ -1,28 +1,29 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+  <div>
+    <Header />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm rowPadding3" v-for="item in [1,2,3,4]">
+                <card :index="item"></card>
+            </div>
+        </div>
+    </div>
   </div>
+
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld'
+  import Card from './components/Card.vue';
+  import Header from './components/Header.vue';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  export default {
+    name: 'App',
+    data () {
+      return{
+      }
+    },
+    components: {
+      Card,
+      Header
+    }
   }
-}
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

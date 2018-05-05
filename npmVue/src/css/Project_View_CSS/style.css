@@ -1,0 +1,51 @@
+#stickyHeader {
+    position: absolute;
+    text-align: center;
+    background-color: black;
+    color: white;
+    right: 10%;
+    left: 10%;
+
+}
+
+.rowPadding3 {
+    margin-top:3%;
+}
+
+.textCentering {
+    text-align: center;
+    align-items: center;
+}
+
+@keyframes random-colors {
+    0% {
+        background: black;
+    }
+    7% {
+        background: red;
+    }
+    14% {
+        background: orange;
+    }
+    28% {
+        background: yellow;
+    }
+    35% {
+        background: greenyellow;
+    }
+    42% {
+        background: green;
+    }
+    56% {
+        background: blue;
+    }
+    70% {
+        background: indigo;
+    }
+    84% {
+        background: violet;
+    }
+    100% {
+        background: white;
+    }
+}
