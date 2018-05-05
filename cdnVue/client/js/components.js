@@ -1,5 +1,17 @@
+const header = {
+    template: 
+    `
+        <header class="mdl-layout__header">
+            <div class="mdl-grid">
+                <div class="mdl-cell--middle  mdl-layout-title">To-Do Projects</div>
+            </div>
+        </header>
+    `
+}
+
 const card = {
-    template: `
+    template: 
+    `
         <div class="wide-card mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">To-Do Project {{index}}</h2>
@@ -21,8 +33,8 @@ const card = {
                 </button>
             </div>
         </div>
-`,
+    `,
     props:['index']
 }
 
-export default card
+export { header, card }
