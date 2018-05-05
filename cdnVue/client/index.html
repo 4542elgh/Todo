@@ -22,18 +22,31 @@
 
 <body>
     <div id="app">
-        <parallex-header>
-        </parallex-header>
+        <header class="mdl-layout__header">
+            <div class="mdl-grid">
+                <div class="mdl-cell--middle  mdl-layout-title">To-Do Projects</div>
+            </div>
+        </header>
+
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--6-col"></div>
+            <div class="mdl-cell mdl-cell--4-col">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input class="mdl-textfield__input" type="text" id="sample3">
+                    <label class="mdl-textfield__label" for="sample3"> Enter Project Name </label>
+                </div>
+            </div>
+            <div class="mdl-cell mdl-cell--2-col"></div>
+        </div>
+
+
         <div class="container">
             <div class="row">
                 <div class="col-sm rowPadding3" v-for="item in [1,2,3,4]">
-                    <card :index="item"></card>
+                    <project :index="item"></project>
                 </div>
             </div>
-            <div class="col-sm rowPadding3">
-                <add-project>
-                </add-project>
-            </div>
+
         </div>
     </div>
 </body>

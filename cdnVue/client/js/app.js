@@ -1,24 +1,36 @@
-import { header, card, add } from './components.js';;
+import { projectComponent } from './components.js';
 
 let socket = io()
-new Vue({
+const app = new Vue ({
     el: '#app',
+    data: {
+        project: {
+            projectName: ''
+        },
+        projects: [],
+        todos: []
+    },
+    methods: {
+
+    },
     components: {
-        'card': card,
-        'parallex-header' : header,
-        'add-project': add
+        'project': projectComponent
     }
 })
 
-// reuse chat-app code
-
 // Client Side Socket Event
-// socket.on('refresh-messages', messages => {
-//     app.messages = messages
-// })
-// socket.on('refresh-users', users => {
-//     app.users = users
-// })
+socket.on('refresh-projects', projects => {
+    app.projects = projects
+    console.log('client-side, refresh-projects')
+})
+
+socket.on('create-project', project => {
+    if (user.projectName !== project.name) {
+        app.project.projectName = user.projectName
+        app.projects.push(project)
+    }
+   
+})
 
 // socket.on('successful-join', user => {
 //     // the successful-join event is emitted on all connections (open browser windows)

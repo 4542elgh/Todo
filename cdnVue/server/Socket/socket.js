@@ -3,11 +3,11 @@ module.exports = (server, db) => {
 
     io.on('connection', socket => {
 
-        //update projects
+        // on making a connection - load in the content already present on the server
         db.allProjects()
             .then(projects => socket.emit('refresh-projects', projects))
         
-            //creating project
+        //creating project
         socket.on('create-project', projectName => {
             db.createProject(projectName)
                 .then(project => io.emit('project-created', project))

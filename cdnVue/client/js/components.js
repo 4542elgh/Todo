@@ -1,20 +1,9 @@
-const header = {
-    template: 
-    `
-        <header class="mdl-layout__header">
-            <div class="mdl-grid">
-                <div class="mdl-cell--middle  mdl-layout-title">To-Do Projects</div>
-            </div>
-        </header>
-    `
-}
-
-const card = {
-    template: 
+const projectComponent = {
+    template:
     `
         <div class="wide-card mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">To-Do Project {{index}}</h2>
+                <h2 class="mdl-card__title-text">To-Do Project {{ index }}</h2>
             </div>
 
             <div class="mdl-card__supporting-text">
@@ -37,13 +26,6 @@ const card = {
     props:['index']
 }
 
-const add = {
-    template:
-    `
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
-            <i class="material-icons"> add </i>
-        </button>
-    `
+export {
+    projectComponent
 }
-
-export { header, card, add }
