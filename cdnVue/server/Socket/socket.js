@@ -6,9 +6,9 @@ module.exports = (server, db) => {
         //update projects
         db.allProjects()
             .then(projects => socket.emit('refresh-projects', projects))
-        //creating project
+        
+            //creating project
         socket.on('create-project', projectName => {
-
             db.createProject(projectName)
                 .then(project => io.emit('project-created', project))
                 .catch(err => io.emit('project-already-exists', err)) //if error, error message is emitted back
