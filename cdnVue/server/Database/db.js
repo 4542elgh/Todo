@@ -17,7 +17,8 @@ const ProjSchema = new Mongoose.Schema({
     name: String,
     todos: [{
         name: String,
-        completed: Boolean
+        completed: Boolean,
+        addedTimestamp: String
     }]
 }, { strict: false })
 
@@ -64,15 +65,46 @@ const createProject = (projectName) => {
         })
         .then(project => {
             //create the project
-            Projects.create(project)
+            return Projects.create(project)
         })
-        .then((name, todos) => {
+        .then(({name, todos}) => {
             return { name, todos }
         })
         .catch(err => {
             console.log(err)
             return null
         })
+}
+
+//search for a matching project name and update it to the new project name
+const editProjectName = (oldProjectName, newProjectName) => {
+    return Projects.findOneAndUpdate({ name: oldProjectName },
+            {
+                $set: { 
+                    name: newProjectName
+                }
+            },
+            { new: true }
+        )
+        .then(({ name, todos}) => { 
+            return { name, todos }
+        })
+        .catch(err => {
+            console.log(err)
+            return null
+        })
+}
+
+//search for a project and delete one project matching the name
+const deleteProject = (projectName) => {
+    return Projects.findOneAndRemove({ name: projectName })
+    .then(({ name, todos}) => {
+        return { name, todos }
+    })
+    .catch(err => {
+        console.log(err)
+        return null
+    })
 }
 
 // add a todo to a specific project
@@ -86,16 +118,23 @@ const addTodo = (projectName, todoName) => {
                     throw new Error('Todo already exists')
             })
 
+
+            let time = new Date()
+            let timeString = `${time.getMonth() + 1}/${time.getDate()}/${time.getFullYear()}`
+                + ` ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
+
             // push a new todo object to the list of todos
-            Projects.findOneAndUpdate({ name: projectName },  
+            Projects.findOneAndUpdate({ name: projectName }, 
                 {
                     $push: { 
                         todos: {
                             name: todoName,
-                            completed: false
+                            completed: false,
+                            addedTimestamp: timeString
                         } 
                     }
-                }
+                }, 
+                { new: true }
             )
             .then(({ name, todos}) => {
                 return { name, todos }
@@ -128,7 +167,8 @@ const toggleTodo = (projectName, todoName, status) => {
                     $set: { 
                         'todos.$.completed': status
                     }
-                }
+                },
+                { new: true }
             )
             .then(({ name, todos}) => {
                 return { name, todos }
@@ -161,9 +201,11 @@ const removeCompletedTodos = (projectName) => {
                     $set: { 
                         todos: cleanTodos
                     }
-                }
+                },
+                { new: true }
             )
             .then(({ name, todos}) => {
+                console.log(`name: ${name}, todos: ${todos}`)
                 return { name, todos }
             })
 
