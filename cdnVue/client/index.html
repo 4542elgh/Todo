@@ -57,9 +57,8 @@
         <p v-text="todoJSON.name"></p>
 
         <div class="input-group mb-3">
-            <input class="form-control" v-model="todoInputField">
+            <input class="form-control" v-model="todoInputField" v-on:keyup.enter="addTodo(todoInputField)">
             <div class="input-group-append">
-                <button type="button" class="btn btn-primary" v-on:click="addTodo(todoInputField)">Add Todo</button>
                 <button type="button" class="btn btn-warning">Archive</button>
             </div>
         </div>
