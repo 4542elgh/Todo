@@ -82,9 +82,11 @@ const app = new Vue({
     mounted () {
         socket.on('refresh-projects', projects => {
             this.todoJSON=projects[0]
+            
         })
         socket.on('added-todo', result => {
             this.todoJSON.todos = result
+            console.log(this.todoJSON.todos)
         })
         socket.on('existing-todos', result => {
             this.todoJSON.todos = result
