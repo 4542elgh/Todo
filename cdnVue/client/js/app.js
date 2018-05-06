@@ -6,7 +6,10 @@ const app = new Vue({
     data: {
         project: {
             projectName: '',
-            uniqueId: 0
+            uniqueId: 0,
+            todoJSON: [],
+            todoInputField: "",
+            todoWarning: false
         },
         count: 0,
         projects: [],
@@ -26,10 +29,56 @@ const app = new Vue({
         deleteProject: function (index) {
             console.log(this.projects[index])
             this.projects.splice(index, 1)
+        },
+        addTodo(todoInputField) { //grabbing input box content, and avoid duplicate entry (space and case insensitive)
+
+            if (this.todoJSON.length == 0) {
+                socket.emit('add-todo', (this.todoJSON.name, todoInputField))
+                this.todoInputField = ""
+            }
+            else {
+                let isDup=false;
+
+                this.todoJSON.todos.forEach(item => {
+                    if (item.description.toLowerCase().replace(/\s/g, '') == todoInputField.toLowerCase().replace(/\s/g, '')){
+                        isDup=true
+                    }
+                })
+
+                if (isDup) {
+                    this.todoWarning = true;
+                }
+                else {
+                    // this.todoJSON.push(todoInputField)
+                    socket.emit('add-todo', this.todoJSON.name, todoInputField)
+
+                    this.todoInputField = "" //this will reset the input stickiness
+                    this.warning = false;
+                }
+            }
+        },
+        editTodo () {},
+        toggleTodo (projectName, todo, status) {
+            this.todoJSON.todos.forEach(item => {
+                if (item.description == todo){
+                    item.completed =! status
+                }
+            })
+            socket.emit('toggle-todo', projectName, todo, !status)
+        },
+        deleteTodo () {
         }
     },
     components: {
         'project-component': projectComponent
+    },
+    mounted () {
+        socket.on('refresh-projects', projects => {
+            this.todoJSON=projects[0]
+        })
+        socket.on('added-todo', result => {
+            this.todoJSON.todos = result
+        })
     }
 })
 

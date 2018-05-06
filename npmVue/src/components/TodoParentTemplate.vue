@@ -8,9 +8,9 @@
     <p v-text="todoJSON.name"></p>
 
     <div class="input-group mb-3">
-      <input class="form-control" v-model="newTodo">
+      <input class="form-control" v-model="todoInputField">
       <div class="input-group-append">
-        <button type="button" class="btn btn-primary" v-on:click="addTodo(newTodo)">Add Todo</button>
+        <button type="button" class="btn btn-primary" v-on:click="addTodo(todoInputField)">Add Todo</button>
         <button type="button" class="btn btn-warning">Archive</button>
       </div>
     </div>
@@ -20,7 +20,7 @@
     </div>
 
     <div v-for="todo in todoJSON.todos">
-      <TodoTemplate :todo="todo"></TodoTemplate>
+      <TodoTemplate :todo="todo" :projectName="todoJSON.name"></TodoTemplate>
     </div>
 
   </div>
@@ -34,31 +34,37 @@
     components: {TodoTemplate},
     data() {
       return {
-        newTodo: '',
+        todoInputField: '',
         todoJSON: [],
         warning: false,
-        project: this.projectName
+        // project: this.projectName    ===> this is the proper way
       }
     },
     props: ['projectName'],
     methods: {
-      addTodo(newTodo) { //grabbing input box content, and avoid duplicate entry (space and case insensitive)
+      addTodo(todoInputField) { //grabbing input box content, and avoid duplicate entry (space and case insensitive)
         if (this.todoJSON.length == 0) {
-          // this.todoJSON.push(newTodo)
-          socket.emit('add-todo', ('cs3801', newTodo))
-          this.newTodo = ""
+          // this.todoJSON.push(todoInputField)
+          this.$socket.emit('add-todo', (this.todoJSON.name, todoInputField))
+          this.todoInputField = ""
         }
         else {
-          if (this.todoJSON.find(item => {
-            return item.toLowerCase().replace(/\s/g, '') == newTodo.toLowerCase().replace(/\s/g, '') //ignore white space and case
-          })) {
+          let isDup=false;
+
+          this.todoJSON.todos.forEach(item=>{
+            if (item.name.toLowerCase().replace(/\s/g, '') == todoInputField.toLowerCase().replace(/\s/g, '')){
+              isDup=true
+            }
+          })
+
+          if (isDup){
             this.warning = true;
           }
           else {
-            // this.todoJSON.push(newTodo)
-            socket.emit('add-todo', (this.project, newTodo))
+            // this.todoJSON.push(todoInputField)
+            this.$socket.emit('add-todo', this.todoJSON.name, todoInputField)
 
-            this.newTodo = "" //this will reset the input stickiness
+            this.todoInputField = "" //this will reset the input stickiness
             this.warning = false;
           }
         }
@@ -70,6 +76,10 @@
     mounted() {
       this.$socket.on('refresh-projects', projects => {
         this.todoJSON = projects[0]
+      })
+
+      this.$socket.on('added-todo',result=>{
+        console.log(result)
       })
     }
   }

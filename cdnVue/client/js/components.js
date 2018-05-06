@@ -1,7 +1,8 @@
 const projectComponent = {
-    template:
-    `
-        <div class="wide-card mdl-card mdl-shadow--2dp">
+    template: `
+        <div class="mdl-grid justify-content: center">
+        <div class="mdl-layout-spacer"></div>
+        <div class="wide-card mdl-card mdl-shadow--8dp">
             <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">{{ projectname }}</h2>
             </div>
@@ -23,7 +24,7 @@ const projectComponent = {
             </div>
         </div>
     `,
-    props:['projectname', 'uniqueid']
+    props: ['projectname', 'uniqueid']
     // methods: {
     //     callParent: function (projectName) {
     //         this.$parent.$options.methods.deleteProject(projectName)
