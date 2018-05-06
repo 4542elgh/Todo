@@ -1,4 +1,4 @@
-const 
+const
     Mongoose = require('mongoose'),
     config = require('./config.json')
 
@@ -27,7 +27,7 @@ const Projects = Mongoose.model('projects', ProjSchema)
 // find all projects
 const allProjects = () => {
     return Projects.find()
-} 
+}
 
 // finds a project that matches the project name
 const findProject = (projectName) => {
@@ -40,7 +40,7 @@ const allProjectTodos = (projectName) => {
         .then((projectFound) => {
             if(!projectFound)
                 throw new Error(`Unable to find ${projectName} in database`)
-            
+
             return projectFound.todos
         })
         .catch(err => {
@@ -79,14 +79,14 @@ const createProject = (projectName) => {
 //search for a matching project name and update it to the new project name
 const editProjectName = (oldProjectName, newProjectName) => {
     return Projects.findOneAndUpdate({ name: oldProjectName },
-            {
-                $set: { 
-                    name: newProjectName
-                }
-            },
-            { new: true }
-        )
-        .then(({ name, todos}) => { 
+        {
+            $set: {
+                name: newProjectName
+            }
+        },
+        { new: true }
+    )
+        .then(({ name, todos}) => {
             return { name, todos }
         })
         .catch(err => {
@@ -98,13 +98,13 @@ const editProjectName = (oldProjectName, newProjectName) => {
 //search for a project and delete one project matching the name
 const deleteProject = (projectName) => {
     return Projects.findOneAndRemove({ name: projectName })
-    .then(({ name, todos}) => {
-        return { name, todos }
-    })
-    .catch(err => {
-        console.log(err)
-        return null
-    })
+        .then(({ name, todos}) => {
+            return { name, todos }
+        })
+        .catch(err => {
+            console.log(err)
+            return null
+        })
 }
 
 // add a todo to a specific project
@@ -124,21 +124,21 @@ const addTodo = (projectName, description) => {
                 + ` ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`
 
             // push a new todo object to the list of todos
-            Projects.findOneAndUpdate({ name: projectName }, 
+            return Projects.findOneAndUpdate({ name: projectName },
                 {
-                    $push: { 
+                    $push: {
                         todos: {
                             'description': description,
                             completed: false,
                             addedTimestamp: timeString
-                        } 
+                        }
                     }
-                }, 
+                },
                 { new: true }
             )
-            .then(({ name, todos}) => {
-                return { name, todos }
-            })
+                .then(({ name, todos}) => {
+                    return { name, todos }
+                })
         })
         .catch(err => {
             console.log(err)
@@ -146,6 +146,71 @@ const addTodo = (projectName, description) => {
         })
 }
 
+// delete a todo with the matching description
+const deleteTodo = (projectName, description) => {
+    return allProjectTodos(projectName)
+        .then(todos => {
+            // create a list of all todos that are not completed
+            let cleanTodos = []
+            todos.forEach(todo => {
+                if(todo.description !== description)
+                    cleanTodos.push(todo)
+            })
+
+            // update the project's todos with the pruned todo list
+            Projects.findOneAndUpdate({ name: projectName },
+                {
+                    $set: {
+                        todos: cleanTodos
+                    }
+                },
+                { new: true }
+            )
+                .then(({ name, todos}) => {
+                    return { name, todos }
+                })
+
+            return true
+        })
+        .catch(err => {
+            console.log(err)
+            return null
+        })
+}
+
+// edit the description of a todo
+const editTodo = (projectName, oldDescription, newDescription) => {
+    return allProjectTodos(projectName)
+        .then(todos => {
+            // create a list of all todos that are not completed
+            let cleanTodos = []
+            todos.forEach(todo => {
+                if(todo.description == oldDescription) {
+                    todo.description = newDescription
+                }
+                cleanTodos.push(todo)
+            })
+
+            // update the project's todos with the new todo list
+            Projects.findOneAndUpdate({ name: projectName },
+                {
+                    $set: {
+                        todos: cleanTodos
+                    }
+                },
+                { new: true }
+            )
+                .then(({ name, todos}) => {
+                    return { name, todos }
+                })
+
+            return true
+        })
+        .catch(err => {
+            console.log(err)
+            return null
+        })
+}
 // delete a todo with the matching description
 const deleteTodo = (projectName, description) => {
     return allProjectTodos(projectName)
@@ -211,7 +276,6 @@ const editTodo = (projectName, oldDescription, newDescription) => {
             return null
         })
 }
-
 // toggle a todo's status for a specific project
 const toggleTodo = (projectName, description, status) => {
     return allProjectTodos(projectName)
@@ -228,17 +292,17 @@ const toggleTodo = (projectName, description, status) => {
                 throw new Error('Todo does not exist')
 
             // update the completed status of todo matching the searchId
-            Projects.findOneAndUpdate({ name: projectName, 'todos._id': searchId },  
+            return Projects.findOneAndUpdate({ name: projectName, 'todos._id': searchId },
                 {
-                    $set: { 
+                    $set: {
                         'todos.$.completed': status
                     }
                 },
                 { new: true }
             )
-            .then(({ name, todos}) => {
-                return { name, todos }
-            })
+                .then(({ name, todos}) => {
+                    return { name, todos }
+                })
         })
         .catch(err => {
             console.log(err)
@@ -262,9 +326,9 @@ const removeCompletedTodos = (projectName) => {
                 throw new Error('No completed todos')
 
             // update the project's todos with the pruned todo list
-            Projects.findOneAndUpdate({ name: projectName },  
+            Projects.findOneAndUpdate({ name: projectName },
                 {
-                    $set: { 
+                    $set: {
                         todos: cleanTodos
                     }
                 },

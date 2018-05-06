@@ -6,7 +6,6 @@ module.exports = (server, db) => {
         // on making a connection - load in the content already present on the database
         db.allProjects()
             .then(projects => socket.emit('refresh-projects', projects))
-        
         //creating project
         socket.on('create-project', projectName => {
             db.createProject(projectName)
@@ -26,8 +25,6 @@ module.exports = (server, db) => {
             .then(updatedProject => io.emit('updated-project-name', updatedProject.name))
             .catch(err => io.emit('error-editing-project-name', err))
         })
-
-        
         socket.on('add-todo', (projectName, todo) => {
             db.addTodo(projectName, todo)
                 .then(project => io.emit('added-todo', project.todos))
@@ -35,7 +32,6 @@ module.exports = (server, db) => {
         })
 
         socket.on('toggle-todo', (projectName,todo, status) =>{
-            
             db.toggleTodo(projectName,todo, status)
                 .then(project => io.emit('todo-toggled-inProject',project.todos))
                 .catch(err => io.emit('todo-toToggle-doesNotExists', err))
@@ -46,7 +42,6 @@ module.exports = (server, db) => {
             db.deleteTodo(projectName, desc)
             .then(project => io.emit('existing-todos', project.todos))
             .catch(err => io.emit('error-on-deletion-ofTodo', err))
-
         })
 
         socket.on('edit-todo',(projectName, oldDesc, newDesc) =>{
@@ -59,6 +54,7 @@ module.exports = (server, db) => {
             db.removeCompletedTodos(projectName)
             .then(project => io.emit('completed-todos', project)) 
             .catch(err => io.emit('no-completed-todos',err))
+=
         })
 
     })

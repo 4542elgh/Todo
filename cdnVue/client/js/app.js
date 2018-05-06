@@ -2,12 +2,16 @@ import {
     projectComponent
 } from './components.js';
 
+
 let socket = io()
 const app = new Vue({
     el: '#app',
     data: {
         project: {
-            projectName: ''
+            projectName: '',
+                todoJSON:[],
+                todoInputField:"",
+                todoWarning:false
         },
         projects: [],
         todos: []
@@ -19,11 +23,58 @@ const app = new Vue({
         },
         deleteProject: function (projectName) {
             delete this.project[this.project.indexOf(projectName)]
-        }
+        },  addTodo(todoInputField) { //grabbing input box content, and avoid duplicate entry (space and case insensitive)
 
+
+            if (this.todoJSON.length == 0) {
+                socket.emit('add-todo', (this.todoJSON.name, todoInputField))
+                this.todoInputField = ""
+            }
+            else {
+                let isDup=false;
+
+                this.todoJSON.todos.forEach(item=>{
+                    if (item.description.toLowerCase().replace(/\s/g, '') == todoInputField.toLowerCase().replace(/\s/g, '')){
+                        isDup=true
+                    }
+                })
+
+                if (isDup){
+                    this.todoWarning = true;
+                }
+                else {
+                    // this.todoJSON.push(todoInputField)
+                    socket.emit('add-todo', this.todoJSON.name, todoInputField)
+
+                    this.todoInputField = "" //this will reset the input stickiness
+                    this.warning = false;
+                }
+            }
+        },
+        editTodo(){
+        },
+        toggleTodo(projectName,todo,status){
+            this.todoJSON.todos.forEach(item=>{
+                if (item.description==todo){
+                    item.completed=!status
+                }
+            })
+            socket.emit('toggle-todo',projectName,todo,!status)
+        },
+        deleteTodo(){
+        }
     },
     components: {
         'project-component': projectComponent
+    },
+
+    mounted(){
+        socket.on('refresh-projects',projects=>{
+            this.todoJSON=projects[0]
+        })
+        socket.on('added-todo',result=>{
+            this.todoJSON.todos=result
+        })
     }
 })
 
