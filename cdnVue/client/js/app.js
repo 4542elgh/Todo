@@ -1,16 +1,51 @@
-import {
-    projectComponent
-} from './components.js';
+const projectComponent = {
+    template: 
+    `
+        <div class="wide-card mdl-card mdl-shadow--2dp">
+            <div  v-show = "project.edit == false" class="mdl-card__title">
+                <h2 @dblclick = "project.edit = true" class="mdl-card__title-text">{{ projectname }}</h2>
+                <input v-show = "project.edit == true" v-model="project.projectname" v-on:blur= "project.edit=false; $emit('update')" @keyup.enter = "todo.edit=false; $emit('update')">
+            </div>
+
+            <div class="mdl-card__supporting-text">
+                <ul v-for="i in 4">
+                    <li>show active todo</li>
+                </ul>
+            </div>
+
+            <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Open {{ projectname }}</a>
+            </div>
+            
+            <div class="mdl-card__menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">delete</i>
+                </button>
+            </div>
+        </div>
+    `,
+    props: ['projectname', 'project', 'project.edit'],
+    methods: {
+        callParentToDelete: function (projectName) {
+            this.$parent.$options.methods.deleteProject(projectName)
+        },
+        callParentToDelete: function (projectName) {
+            this.$parent.$options.methods.editProject(projectName)
+        }
+    }
+}
 
 let socket = io()
 const app = new Vue({
     el: '#app',
     data: {
         project: {
-            projectName: ''
+            projectName: '',
+            edit: false,
+            todos: []
         },
+        editedProject: "",
         projects: [],
-        todos: []
     },
     methods: {
         createProject: function () {
@@ -18,7 +53,12 @@ const app = new Vue({
             this.project.projectName = ""
         },
         deleteProject: function (projectName) {
-            delete this.projects[indexOf(projectName)]
+            delete app.projects[app.projects.indexOf(projectName)]
+            console.log("delete " + projectName)
+        },
+        editProject: function (projectName) {
+            this.projects[this.project.projectName] = projectName
+            console.log("inside edit fn " + projectName)
         }
 
     },
