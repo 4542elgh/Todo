@@ -1,5 +1,19 @@
 module.exports = (server, db) => {
     const io = require('socket.io')(server)
+    //Function for data cleaning
+    const getProjectInfo = project => {
+        const todosInfo = []
+        project.todos.forEach(todo => {
+            todosInfo.push({
+                description: todo.description,
+                status: todo.status
+            })
+        })
+        return [{
+            name: project.name,
+            todosInfo
+        }]
+    }
 
     io.on('connection', socket => {
 
@@ -66,18 +80,6 @@ module.exports = (server, db) => {
 
     })
 
-    const getProjectInfo = project => {
-        const todosInfo = []
-        project.todos.forEach(todo => {
-            todosInfo.push({
-                description: todo.description,
-                status: todo.status
-            })
-        })
-        return [{
-            name: project.name,
-            todosInfo
-        }]
-    }
+   
 
 }
