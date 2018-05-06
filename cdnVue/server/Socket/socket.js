@@ -21,7 +21,6 @@ module.exports = (server, db) => {
         })
 
         socket.on('toggle-todo', (projectName,todo, status) =>{
-            //TODO: Not sure if I should be inverting the status for toggle or db
             db.toggleTodo(projectName,todo, status)
             .then(projectName=>{
                 db.findProject(projectName)//TODO:Not sure if I shoul be emmiting a new fresh project in which the todo was toggled
