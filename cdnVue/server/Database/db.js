@@ -114,7 +114,7 @@ const addTodo = (projectName, description) => {
 
             // search to see if a todo already exists
             todos.forEach(todo => {
-                if(todo.name === description)
+                if(todo.description === description)
                     throw new Error('Todo already exists')
             })
 
@@ -220,7 +220,7 @@ const toggleTodo = (projectName, description, status) => {
             // search for a matching todo's id
             let searchId = ''
             todos.forEach(todo => {
-                if(todo.name === description)
+                if(todo.description === description)
                     searchId = todo['_id']
             })
 
