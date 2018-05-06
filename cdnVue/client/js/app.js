@@ -19,31 +19,31 @@ const app = new Vue({
     },
     methods: {
         createProject: function () {
-            let copy = {
+            let projectCopy = {
                 projectName: this.project.projectName,
                 uniqueId: this.project.uniqueId
             }
             this.project.uniqueId = this.count++
-            console.log(copy.uniqueId)
-            this.projects.push(copy)
+            console.log(projectCopy.uniqueId)
+            this.projects.push(projectCopy)
             this.project.projectName = ""
         },
         deleteProject: function (index) {
             console.log(this.projects[index])
             this.projects.splice(index, 1)
         },
-        addTodo(todoInputField) { //grabbing input box content, and avoid duplicate entry (space and case insensitive)
-
+        addTodo(todoInputField) { 
+            //grabbing input box content, and avoid duplicate entry (space and case insensitive)
             if (this.todoJSON.length == 0) {
                 socket.emit('add-todo', (this.todoJSON.name, todoInputField))
                 this.todoInputField = ""
             }
             else {
-                let isDup=false;
+                let isDup = false;
 
                 this.todoJSON.todos.forEach(item => {
                     if (item.description.toLowerCase().replace(/\s/g, '') == todoInputField.toLowerCase().replace(/\s/g, '')){
-                        isDup=true
+                        isDup = true
                     }
                 })
 
@@ -69,11 +69,11 @@ const app = new Vue({
             socket.emit('toggle-todo', projectName, todo, !status)
         },
         archiveTodo(projectName){
-            socket.emit('remove-completed-todos',projectName)
+            socket.emit('remove-completed-todos', projectName)
         }
         ,
         deleteTodo (projectName,description) {
-            socket.emit('delete-todo',projectName,description)
+            socket.emit('delete-todo', projectName, description)
         }
     },
     components: {
@@ -81,62 +81,24 @@ const app = new Vue({
     },
     mounted: function () {
         socket.on('refresh-projects', projects => {
-            this.todoJSON=projects[0]
+            this.todoJSON = projects[0]
             this.todoPreview=this.todoJSON.todos.slice(0,4)
         })
         socket.on('added-todo', result => {
             // console.log(result[0].todosInfo)
             this.todoJSON.todos = result[0].todosInfo
-            this.todoPreview=this.todoJSON.slice(0,4)
+            this.todoPreview = this.todoJSON.slice(0,4)
 
         })
         socket.on('existing-todos', result => {
             this.todoJSON.todos = result[0].todosInfo
-            this.todoPreview=this.todoJSON.slice(0,4)
+            this.todoPreview = this.todoJSON.slice(0,4)
         })
 
         socket.on('completed-todos', result => {
             this.todoJSON.todos = result[0].todosInfo
-            this.todoPreview=this.todoJSON.slice(0,4)
+            this.todoPreview = this.todoJSON.slice(0,4)
         })
     }
 })
-
-
-// Client Side Socket Event
-// socket.on('refresh-projects', projects => {
-//     app.projects = projects
-//     console.log('client-side, refresh-projects')
-// })
-
-// socket.on('create-project', project => {
-//     if (user.projectName !== project.name) {
-//         app.project.projectName = user.projectName
-//         app.projects.push(project)
-//     }
-
-// })
-
-// socket.on('successful-join', user => {
-//     // the successful-join event is emitted on all connections (open browser windows)
-//     // so we need to ensure the loggedIn is set to true and user is set for matching user only
-//     if (user.name === app.userName) {
-//         app.user = user
-//         app.loggedIn = true
-//     }
-//     app.isError = false
-//     app.users.push(user)
-// })
-
-// // handles failed-join when username's name are not unique
-// socket.on('failed-join', user => {
-//     app.isError = true
-//     app.error = `Sorry, ${user.name} is already taken.`
-// })
-
-// socket.on('successful-message', content => {
-//     // clear the message after success send
-//     app.message = ''
-//     app.messages.push(content)
-// })
 
