@@ -1,29 +1,6 @@
 module.exports = (server, db) => {
     const io = require('socket.io')(server)
 
-    // const getAllTheProjectsInfo = project =>{
-    //     const projecInfo = []
-    //     const todosInfo = []
-
-    //     project.forEach(element => {
-            
-    //     });
-    // }
-
-    const getProjectInfo = project => {
-        const todosInfo = []
-        project.todos.forEach(todo => {
-            todosInfo.push({
-                description: todo.description,
-                status: todo.status
-            })
-        })
-        return [{
-            name: project.name,
-            todosInfo
-        }]
-    }
-
     io.on('connection', socket => {
 
         // on making a connection - load in the content already present on the database
@@ -88,4 +65,19 @@ module.exports = (server, db) => {
         })
 
     })
+
+    const getProjectInfo = project => {
+        const todosInfo = []
+        project.todos.forEach(todo => {
+            todosInfo.push({
+                description: todo.description,
+                status: todo.status
+            })
+        })
+        return [{
+            name: project.name,
+            todosInfo
+        }]
+    }
+
 }

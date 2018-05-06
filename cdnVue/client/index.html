@@ -54,10 +54,10 @@
                         </div>
 
                         <div class="mdl-card__supporting-text">
-                            <!--<ul v-for="todo in todoJSON.todos.slice(0,4) ">-->
-                                <!--<li >{{todo.description}}</li>-->
-                            <!--</ul>-->
-                            <p v-text="todoJSON.todos[0]"></p>
+                            <ul v-for="todo in todoPreview">
+                                <li >{{todo.description}}</li>
+                            </ul>
+
                         </div>
 
                         <div class="mdl-card__actions mdl-card--border">

@@ -11,7 +11,8 @@ const app = new Vue({
         count: 0,
         projects: [],
 
-        todoJSON: [],
+        todoJSON: {},
+        todoPreview:{},
         todoInputField: "",
         todoWarning: false,
         show: false
@@ -78,20 +79,25 @@ const app = new Vue({
     components: {
         'project-component': projectComponent
     },
-    mounted () {
+    mounted: function () {
         socket.on('refresh-projects', projects => {
             this.todoJSON=projects[0]
+            this.todoPreview=this.todoJSON.todos.slice(0,4)
         })
         socket.on('added-todo', result => {
             // console.log(result[0].todosInfo)
             this.todoJSON.todos = result[0].todosInfo
+            this.todoPreview=this.todoJSON.slice(0,4)
+
         })
         socket.on('existing-todos', result => {
             this.todoJSON.todos = result[0].todosInfo
+            this.todoPreview=this.todoJSON.slice(0,4)
         })
 
         socket.on('completed-todos', result => {
             this.todoJSON.todos = result[0].todosInfo
+            this.todoPreview=this.todoJSON.slice(0,4)
         })
     }
 })
