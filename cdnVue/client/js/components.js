@@ -17,7 +17,7 @@ const projectComponent = {
             </div>
             
             <div class="mdl-card__menu">
-                <button v-on:click="deleteProject(projectname)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <button v-on:click="callParent(projectname)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
                 <i class="material-icons">delete</i>
                 </button>
             </div>

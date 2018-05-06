@@ -18,7 +18,9 @@ const app = new Vue({
             this.project.projectName = ""
         },
         deleteProject: function (projectName) {
-            delete this.project[this.project.indexOf(projectName)]
+            console.log(app.projects)
+            delete app.projects[app.projects.indexOf(projectName)]
+            console.log(projectName)
         }
 
     },
