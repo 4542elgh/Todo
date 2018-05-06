@@ -3,7 +3,7 @@ const
     config = require('./config.json')
 
 //local testing
-// Mongoose.connect('mongodb://localhost/todo')
+Mongoose.connect('mongodb://localhost/todo')
 
 //prod <-- use this for the presentation
 Mongoose.connect(config.uri)
@@ -87,7 +87,7 @@ const addTodo = (projectName, todoName) => {
             })
 
             // push a new todo object to the list of todos
-            Projects.findOneAndUpdate({ name: projectName },  
+           return Projects.findOneAndUpdate({ name: projectName },  
                 {
                     $push: { 
                         todos: {
@@ -123,7 +123,7 @@ const toggleTodo = (projectName, todoName, status) => {
                 throw new Error('Todo does not exist')
 
             // update the completed status of todo matching the searchId
-            Projects.findOneAndUpdate({ name: projectName, 'todos._id': searchId },  
+           return Projects.findOneAndUpdate({ name: projectName, 'todos._id': searchId },  
                 {
                     $set: { 
                         'todos.$.completed': status

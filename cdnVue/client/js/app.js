@@ -27,6 +27,7 @@ const app = new Vue({
     }
 })
 
+
 // Client Side Socket Event
 // socket.on('refresh-projects', projects => {
 //     app.projects = projects
