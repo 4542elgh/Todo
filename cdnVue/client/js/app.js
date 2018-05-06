@@ -6,14 +6,15 @@ const app = new Vue({
     data: {
         project: {
             projectName: '',
-            uniqueId: 0,
-            todoJSON: [],
-            todoInputField: "",
-            todoWarning: false
+            uniqueId: 0
         },
         count: 0,
         projects: [],
-        todos: []
+        todos: [],
+
+        todoJSON: [],
+        todoInputField: "",
+        todoWarning: false
     },
     methods: {
         createProject: function () {
@@ -66,7 +67,8 @@ const app = new Vue({
             })
             socket.emit('toggle-todo', projectName, todo, !status)
         },
-        deleteTodo () {
+        deleteTodo (projectName,description) {
+            socket.emit('delete-todo',projectName,description)
         }
     },
     components: {
@@ -77,6 +79,9 @@ const app = new Vue({
             this.todoJSON=projects[0]
         })
         socket.on('added-todo', result => {
+            this.todoJSON.todos = result
+        })
+        socket.on('existing-todos', result => {
             this.todoJSON.todos = result
         })
     }

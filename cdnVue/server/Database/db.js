@@ -158,72 +158,7 @@ const deleteTodo = (projectName, description) => {
             })
 
             // update the project's todos with the pruned todo list
-            Projects.findOneAndUpdate({ name: projectName },
-                {
-                    $set: {
-                        todos: cleanTodos
-                    }
-                },
-                { new: true }
-            )
-                .then(({ name, todos}) => {
-                    return { name, todos }
-                })
-
-            return true
-        })
-        .catch(err => {
-            console.log(err)
-            return null
-        })
-}
-
-// edit the description of a todo
-const editTodo = (projectName, oldDescription, newDescription) => {
-    return allProjectTodos(projectName)
-        .then(todos => {
-            // create a list of all todos that are not completed
-            let cleanTodos = []
-            todos.forEach(todo => {
-                if(todo.description == oldDescription) {
-                    todo.description = newDescription
-                }
-                cleanTodos.push(todo)
-            })
-
-            // update the project's todos with the new todo list
-            Projects.findOneAndUpdate({ name: projectName },
-                {
-                    $set: {
-                        todos: cleanTodos
-                    }
-                },
-                { new: true }
-            )
-                .then(({ name, todos}) => {
-                    return { name, todos }
-                })
-
-            return true
-        })
-        .catch(err => {
-            console.log(err)
-            return null
-        })
-}
-// delete a todo with the matching description
-const deleteTodo = (projectName, description) => {
-    return allProjectTodos(projectName)
-        .then(todos => {
-            // create a list of all todos that are not completed
-            let cleanTodos = []
-            todos.forEach(todo => {
-                if(todo.description !== description)
-                    cleanTodos.push(todo)
-            })
-
-            // update the project's todos with the pruned todo list
-            Projects.findOneAndUpdate({ name: projectName },  
+            return Projects.findOneAndUpdate({ name: projectName },
                 {
                     $set: { 
                         todos: cleanTodos
@@ -353,5 +288,6 @@ module.exports = {
     createProject,
     findProject,
     removeCompletedTodos,
-    toggleTodo
+    toggleTodo,
+    deleteTodo
 }

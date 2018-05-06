@@ -76,7 +76,7 @@
                        :class="{done:todo.completed}"></label>
             </div>
             <button type="button" class="btn btn-primary">Edit</button>
-            <button type="button" class="btn btn-danger">Delete Todo</button>
+            <button type="button" class="btn btn-danger" v-on:click="deleteTodo(todoJSON.name,todo.description)">Delete Todo</button>
         </div>
     </div>
 
