@@ -52,7 +52,7 @@ module.exports = (server, db) => {
 
         })
 
-        socke.on('edit-todo',(projectName, oldDesc, newDesc) =>{
+        socket.on('edit-todo',(projectName, oldDesc, newDesc) =>{
             db.editTodo(projectName,oldDesc,newDesc)
             .then(project => io.emit('updated-todo',project,todos))
             .catch(err => io.emit('error-updating-todo', err))
