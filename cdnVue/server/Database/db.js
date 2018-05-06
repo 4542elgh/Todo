@@ -3,10 +3,10 @@ const
     config = require('./config.json')
 
 //local testing
-Mongoose.connect('mongodb://localhost/todo')
+//Mongoose.connect('mongodb://localhost/todo')
 
 //prod <-- use this for the presentation
-// Mongoose.connect(config.uri)
+Mongoose.connect(config.uri)
 
 Mongoose.connection.on('error', err => {
     console.log('MongoDB Connection Error:' + err)
