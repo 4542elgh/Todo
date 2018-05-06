@@ -1,4 +1,4 @@
-const 
+const
     Mongoose = require('mongoose'),
     config = require('./config.json')
 
@@ -26,7 +26,7 @@ const Projects = Mongoose.model('projects', ProjSchema)
 // find all projects
 const allProjects = () => {
     return Projects.find()
-} 
+}
 
 // finds a project that matches the project name
 const findProject = (projectName) => {
@@ -39,7 +39,7 @@ const allProjectTodos = (projectName) => {
         .then((projectFound) => {
             if(!projectFound)
                 throw new Error(`Unable to find ${projectName} in database`)
-            
+
             return projectFound.todos
         })
         .catch(err => {
@@ -87,13 +87,13 @@ const addTodo = (projectName, todoName) => {
             })
 
             // push a new todo object to the list of todos
-           return Projects.findOneAndUpdate({ name: projectName },  
+           return Projects.findOneAndUpdate({ name: projectName },
                 {
-                    $push: { 
+                    $push: {
                         todos: {
                             name: todoName,
                             completed: false
-                        } 
+                        }
                     }
                 }
             )
@@ -123,9 +123,9 @@ const toggleTodo = (projectName, todoName, status) => {
                 throw new Error('Todo does not exist')
 
             // update the completed status of todo matching the searchId
-           return Projects.findOneAndUpdate({ name: projectName, 'todos._id': searchId },  
+           return Projects.findOneAndUpdate({ name: projectName, 'todos._id': searchId },
                 {
-                    $set: { 
+                    $set: {
                         'todos.$.completed': status
                     }
                 }
@@ -156,9 +156,9 @@ const removeCompletedTodos = (projectName) => {
                 throw new Error('No completed todos')
 
             // update the project's todos with the pruned todo list
-            Projects.findOneAndUpdate({ name: projectName },  
+            return Projects.findOneAndUpdate({ name: projectName },
                 {
-                    $set: { 
+                    $set: {
                         todos: cleanTodos
                     }
                 }

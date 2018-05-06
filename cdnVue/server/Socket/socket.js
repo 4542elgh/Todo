@@ -54,7 +54,9 @@ module.exports = (server, db) => {
 
         socket.on('remove-completed-todos',( projectName) =>{
             db.removeCompletedTodos(projectName)
-            .then(project => io.emit('completed-todos', project)) 
+            .then(project => {
+                io.emit('completed-todos', project.todos)
+            })
             .catch(err => io.emit('no-completed-todos',err))
         })
 

@@ -261,7 +261,7 @@ const removeCompletedTodos = (projectName) => {
                 throw new Error('No completed todos')
 
             // update the project's todos with the pruned todo list
-            Projects.findOneAndUpdate({ name: projectName },
+            return Projects.findOneAndUpdate({ name: projectName },
                 {
                     $set: {
                         todos: cleanTodos
