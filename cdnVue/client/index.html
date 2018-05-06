@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +33,7 @@
             <div class="mdl-cell mdl-cell--6-col"></div>
             <div class="mdl-cell mdl-cell--4-col">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="sample3">
+                    <input v-on:keyup.enter="createProject" v-model="project.projectName" class="mdl-textfield__input" type="text" id="sample3">
                     <label class="mdl-textfield__label" for="sample3"> Enter Project Name </label>
                 </div>
             </div>
@@ -42,8 +43,8 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-sm rowPadding3" v-for="item in [1,2,3,4]">
-                    <project :index="item"></project>
+                <div class="col-sm rowPadding3" v-for="project in projects">
+                    <project-component :projectname="project"></project-component>
                 </div>
             </div>
 

@@ -1,7 +1,9 @@
-import { projectComponent } from './components.js';
+import {
+    projectComponent
+} from './components.js';
 
 let socket = io()
-const app = new Vue ({
+const app = new Vue({
     el: '#app',
     data: {
         project: {
@@ -11,26 +13,33 @@ const app = new Vue ({
         todos: []
     },
     methods: {
+        createProject: function () {
+            this.projects.push(this.project.projectName)
+            this.project.projectName = ""
+        },
+        deleteProject: function (projectName) {
+            delete this.project[this.project.indexOf(projectName)]
+        }
 
     },
     components: {
-        'project': projectComponent
+        'project-component': projectComponent
     }
 })
 
 // Client Side Socket Event
-socket.on('refresh-projects', projects => {
-    app.projects = projects
-    console.log('client-side, refresh-projects')
-})
+// socket.on('refresh-projects', projects => {
+//     app.projects = projects
+//     console.log('client-side, refresh-projects')
+// })
 
-socket.on('create-project', project => {
-    if (user.projectName !== project.name) {
-        app.project.projectName = user.projectName
-        app.projects.push(project)
-    }
-   
-})
+// socket.on('create-project', project => {
+//     if (user.projectName !== project.name) {
+//         app.project.projectName = user.projectName
+//         app.projects.push(project)
+//     }
+
+// })
 
 // socket.on('successful-join', user => {
 //     // the successful-join event is emitted on all connections (open browser windows)
