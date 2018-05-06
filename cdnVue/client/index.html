@@ -42,8 +42,9 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-sm rowPadding3" v-for="project in projects">
-                    <project-component :projectname="project"></project-component>
+                <div class="col-sm rowPadding3" v-for="(project, index) in projects" :key="project.uniqueId">
+                    <project-component v-on:delete-project="deleteProject(index)" :projectname="project.projectName" :uniqueid="project.uniqueId">
+                    </project-component>
                 </div>
             </div>
 

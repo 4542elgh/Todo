@@ -1,39 +1,4 @@
-const projectComponent = {
-    template: 
-    `
-        <div class="wide-card mdl-card mdl-shadow--2dp">
-            <div  v-show = "project.edit == false" class="mdl-card__title">
-                <h2 @dblclick = "project.edit = true" class="mdl-card__title-text">{{ projectname }}</h2>
-                <input v-show = "project.edit == true" v-model="project.projectname" v-on:blur= "project.edit=false; $emit('update')" @keyup.enter = "todo.edit=false; $emit('update')">
-            </div>
-
-            <div class="mdl-card__supporting-text">
-                <ul v-for="i in 4">
-                    <li>show active todo</li>
-                </ul>
-            </div>
-
-            <div class="mdl-card__actions mdl-card--border">
-                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Open {{ projectname }}</a>
-            </div>
-            
-            <div class="mdl-card__menu">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                <i class="material-icons">delete</i>
-                </button>
-            </div>
-        </div>
-    `,
-    props: ['projectname', 'project', 'project.edit'],
-    methods: {
-        callParentToDelete: function (projectName) {
-            this.$parent.$options.methods.deleteProject(projectName)
-        },
-        callParentToDelete: function (projectName) {
-            this.$parent.$options.methods.editProject(projectName)
-        }
-    }
-}
+import { projectComponent } from './components.js'
 
 let socket = io()
 const app = new Vue({
@@ -41,26 +6,26 @@ const app = new Vue({
     data: {
         project: {
             projectName: '',
-            edit: false,
-            todos: []
+            uniqueId: 0
         },
-        editedProject: "",
+        count: 0,
         projects: [],
     },
     methods: {
         createProject: function () {
-            this.projects.push(this.project.projectName)
+            let copy = {
+                projectName: this.project.projectName,
+                uniqueId: this.project.uniqueId
+            }
+            this.project.uniqueId = this.count++
+            console.log(copy.uniqueId)
+            this.projects.push(copy)
             this.project.projectName = ""
         },
-        deleteProject: function (projectName) {
-            delete app.projects[app.projects.indexOf(projectName)]
-            console.log("delete " + projectName)
-        },
-        editProject: function (projectName) {
-            this.projects[this.project.projectName] = projectName
-            console.log("inside edit fn " + projectName)
+        deleteProject: function (index) {
+            console.log(this.projects[index])
+            this.projects.splice(index, 1)
         }
-
     },
     components: {
         'project-component': projectComponent
