@@ -3,7 +3,7 @@ module.exports = (server, db) => {
 
     io.on('connection', socket => {
 
-        // on making a connection - load in the content already present on the server
+        // on making a connection - load in the content already present on the database
         db.allProjects()
             .then(projects => socket.emit('refresh-projects', projects))
         
@@ -21,18 +21,18 @@ module.exports = (server, db) => {
         })
 
         socket.on('toggle-todo', (projectName,todo, status) =>{
-            //TODO: Not sure if I should be inverting the status for toggle or db
+            
             db.toggleTodo(projectName,todo, status)
             .then(projectName=>{
-                db.findProject(projectName)//TODO:Not sure if I shoul be emmiting a new fresh project in which the todo was toggled
-                .then(project => io.emit('todo-toggled-inProject',project))
+                db.findProject(projectName)
+                .then(project => io.emit('todo-toggled-inProject',project.todos))
             })
             .catch(err => io.emit('todo-toToggle-doesNotExists', err))
         })
 
         socket.on('remove-completed-todos',( projectName) =>{
             db.removeCompletedTodos(projectName)
-            .then(project => io.emit('completed-todos', project)) //TODO: Not sure if I should emit the whole project or just todos
+            .then(project => io.emit('completed-todos', project)) 
             .catch(err => io.emit('no-completed-todos',err))
         })
 
