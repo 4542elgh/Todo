@@ -54,7 +54,6 @@ module.exports = (server, db) => {
             db.removeCompletedTodos(projectName)
             .then(project => io.emit('completed-todos', project)) 
             .catch(err => io.emit('no-completed-todos',err))
-=
         })
 
     })
