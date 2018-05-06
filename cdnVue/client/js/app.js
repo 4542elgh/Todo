@@ -67,6 +67,10 @@ const app = new Vue({
             })
             socket.emit('toggle-todo', projectName, todo, !status)
         },
+        archiveTodo(projectName){
+            socket.emit('remove-completed-todos',projectName)
+        }
+        ,
         deleteTodo (projectName,description) {
             socket.emit('delete-todo',projectName,description)
         }
@@ -82,6 +86,10 @@ const app = new Vue({
             this.todoJSON.todos = result
         })
         socket.on('existing-todos', result => {
+            this.todoJSON.todos = result
+        })
+
+        socket.on('completed-todos', result => {
             this.todoJSON.todos = result
         })
     }
