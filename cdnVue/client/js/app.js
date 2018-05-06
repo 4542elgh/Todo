@@ -7,22 +7,28 @@ const app = new Vue({
     el: '#app',
     data: {
         project: {
-            projectName: ''
+            projectName: '',
+            uniqueId: 0
         },
+        count: 0,
         projects: [],
         todos: []
     },
     methods: {
         createProject: function () {
-            this.projects.push(this.project.projectName)
+            let copy = {
+                projectName: this.project.projectName,
+                uniqueId: this.project.uniqueId
+            }
+            this.project.uniqueId = this.count++
+            console.log(copy.uniqueId)
+            this.projects.push(copy)
             this.project.projectName = ""
         },
-        deleteProject: function (projectName) {
-            console.log(app.projects)
-            delete app.projects[app.projects.indexOf(projectName)]
-            console.log(projectName)
+        deleteProject: function (index) {
+            console.log(this.projects[index])
+            this.projects.splice(index, 1)
         }
-
     },
     components: {
         'project-component': projectComponent
