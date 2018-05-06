@@ -105,7 +105,6 @@
             </div>
 
             <div v-for="todo in todoJSON.todos">
-                <br>
                 <div>
                     <input type="checkbox" v-on:click="toggleTodo(todoJSON.name,todo.description,todo.completed)" v-model="todo.completed">
                     <label class="custom-control-label" v-text="todo" :class="{done:todo.completed}"></label>
