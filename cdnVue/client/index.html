@@ -23,25 +23,24 @@
 
 <body>
     <div id="app">
+        <!-- Header -->
         <header class="mdl-layout__header">
             <div class="mdl-grid">
-                <div class="mdl-cell--middle  mdl-layout-title">To-Do Projects</div>
+                <div class="mdl-cell--middle  mdl-layout-title"><h1>To-Do Projects</h1></div>
             </div>
         </header>
+        <!-- Project Name Input Box -->
         <div class="container">
-        <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--6-col"></div>
-            <div class="mdl-cell mdl-cell--4-col">
+        <div class="mdl-grid justify-content: center">
+                <div class="mdl-layout-spacer"></div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input v-on:keyup.enter="createProject" v-model="project.projectName" class="mdl-textfield__input" type="text" id="sample3">
                     <label class="mdl-textfield__label" for="sample3"> Enter Project Name </label>
                 </div>
-            </div>
-            <div class="mdl-cell mdl-cell--2-col"></div>
+            <div class="mdl-layout-spacer"></div>
         </div>
         </div>
-
-
+        <!-- Project Lists In Grid -->
         <div class="container">
             <div class="row">
                 <div class="col-sm rowPadding3" v-for="project in projects">

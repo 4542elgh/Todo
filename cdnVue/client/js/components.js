@@ -1,7 +1,7 @@
 const projectComponent = {
     template:
         `
-    <div class="mdl-grid">
+    <div class="mdl-grid justify-content: center">
     <div class="mdl-layout-spacer"></div>
     <div class="wide-card mdl-card mdl-shadow--8dp">
         <div class="mdl-card__title">
