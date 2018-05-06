@@ -48,7 +48,7 @@ module.exports = (server, db) => {
 
             db.deleteTodo(projectName, desc)
             .then(project => io.emit('existing-todos', project.todos))
-            .cathc(err => io.emit('error-on-deletion-ofTodo', err))
+            .catch(err => io.emit('error-on-deletion-ofTodo', err))
 
         })
 
