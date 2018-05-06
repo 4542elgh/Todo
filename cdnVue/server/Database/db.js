@@ -3,10 +3,10 @@ const
     config = require('./config.json')
 
 //local testing
-// Mongoose.connect('mongodb://localhost/todo')
+Mongoose.connect('mongodb://localhost/todo')
 
 //prod <-- use this for the presentation
-Mongoose.connect(config.uri)
+// Mongoose.connect(config.uri)
 
 Mongoose.connection.on('error', err => {
     console.log('MongoDB Connection Error:' + err)
@@ -16,7 +16,7 @@ Mongoose.connection.on('error', err => {
 const ProjSchema = new Mongoose.Schema({
     name: String,
     todos: [{
-        name: String,
+        description: String,
         completed: Boolean,
         addedTimestamp: String
     }]
@@ -108,13 +108,13 @@ const deleteProject = (projectName) => {
 }
 
 // add a todo to a specific project
-const addTodo = (projectName, todoName) => {
+const addTodo = (projectName, description) => {
     return allProjectTodos(projectName)
         .then(todos => {
 
             // search to see if a todo already exists
             todos.forEach(todo => {
-                if(todo.name === todoName)
+                if(todo.name === description)
                     throw new Error('Todo already exists')
             })
 
@@ -128,7 +128,7 @@ const addTodo = (projectName, todoName) => {
                 {
                     $push: { 
                         todos: {
-                            name: todoName,
+                            'description': description,
                             completed: false,
                             addedTimestamp: timeString
                         } 
@@ -146,15 +146,81 @@ const addTodo = (projectName, todoName) => {
         })
 }
 
-//toggle a todo's status for a specific project
-const toggleTodo = (projectName, todoName, status) => {
+// delete a todo with the matching description
+const deleteTodo = (projectName, description) => {
+    return allProjectTodos(projectName)
+        .then(todos => {
+            // create a list of all todos that are not completed
+            let cleanTodos = []
+            todos.forEach(todo => {
+                if(todo.description !== description)
+                    cleanTodos.push(todo)
+            })
+
+            // update the project's todos with the pruned todo list
+            Projects.findOneAndUpdate({ name: projectName },  
+                {
+                    $set: { 
+                        todos: cleanTodos
+                    }
+                },
+                { new: true }
+            )
+            .then(({ name, todos}) => {
+                return { name, todos }
+            })
+
+            return true
+        })
+        .catch(err => {
+            console.log(err)
+            return null
+        })
+}
+
+// edit the description of a todo
+const editTodo = (projectName, oldDescription, newDescription) => {
+    return allProjectTodos(projectName)
+        .then(todos => {
+            // create a list of all todos that are not completed
+            let cleanTodos = []
+            todos.forEach(todo => {
+                if(todo.description == oldDescription) {
+                    todo.description = newDescription
+                }
+                cleanTodos.push(todo)
+            })
+
+            // update the project's todos with the new todo list
+            Projects.findOneAndUpdate({ name: projectName },  
+                {
+                    $set: { 
+                        todos: cleanTodos
+                    }
+                },
+                { new: true }
+            )
+            .then(({ name, todos}) => {
+                return { name, todos }
+            })
+
+            return true
+        })
+        .catch(err => {
+            console.log(err)
+            return null
+        })
+}
+
+// toggle a todo's status for a specific project
+const toggleTodo = (projectName, description, status) => {
     return allProjectTodos(projectName)
         .then(todos => {
 
             // search for a matching todo's id
-            searchId = ''
+            let searchId = ''
             todos.forEach(todo => {
-                if(todo.name === todoName)
+                if(todo.name === description)
                     searchId = todo['_id']
             })
 
@@ -186,7 +252,7 @@ const removeCompletedTodos = (projectName) => {
         .then(todos => {
 
             // create a list of all todos that are not completed
-            cleanTodos = []
+            let cleanTodos = []
             todos.forEach(todo => {
                 if(todo.completed !== true)
                     cleanTodos.push(todo)
@@ -205,7 +271,6 @@ const removeCompletedTodos = (projectName) => {
                 { new: true }
             )
             .then(({ name, todos}) => {
-                console.log(`name: ${name}, todos: ${todos}`)
                 return { name, todos }
             })
 
