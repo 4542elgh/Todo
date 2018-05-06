@@ -14,7 +14,8 @@ const app = new Vue({
 
         todoJSON: [],
         todoInputField: "",
-        todoWarning: false
+        todoWarning: false,
+        show: false
     },
     methods: {
         createProject: function () {
