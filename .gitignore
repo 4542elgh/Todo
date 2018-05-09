@@ -4,3 +4,4 @@ node_modules/*
 __MACOSX/*
 cdnVue/node_modules/*
 npmVue/node_modules/*
+.DS_Store
