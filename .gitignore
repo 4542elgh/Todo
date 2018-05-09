@@ -6,6 +6,10 @@ cdnVue/node_modules/*
 npmVue/node_modules/*
 !../client/*
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .DS_Store
 >>>>>>> dd3a384593095a4affe2727511fbc3a16cbceb17
+=======
+.DS_Store
+>>>>>>> 7acccecf38bc53976efac2f5fa19fe0a496565c0
