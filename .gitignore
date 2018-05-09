@@ -5,3 +5,7 @@ __MACOSX/*
 cdnVue/node_modules/*
 npmVue/node_modules/*
 !../client/*
+<<<<<<< HEAD
+=======
+.DS_Store
+>>>>>>> dd3a384593095a4affe2727511fbc3a16cbceb17

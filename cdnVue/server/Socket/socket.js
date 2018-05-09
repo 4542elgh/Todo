@@ -1,12 +1,26 @@
 module.exports = (server, db) => {
     const io = require('socket.io')(server)
+    //Function for data cleaning
+    const getProjectInfo = project => {
+        const todosInfo = []
+        project.todos.forEach(todo => {
+            todosInfo.push({
+                description: todo.description,
+                status: todo.status
+            })
+        })
+        return [{
+            name: project.name,
+            todosInfo
+        }]
+    }
 
     io.on('connection', socket => {
 
-        // on making a connection - load in the content already present on the server
+        // on making a connection - load in the content already present on the database
         db.allProjects()
             .then(projects => socket.emit('refresh-projects', projects))
-        
+
         //creating project
         socket.on('create-project', projectName => {
             db.createProject(projectName)
@@ -14,26 +28,54 @@ module.exports = (server, db) => {
                 .catch(err => io.emit('project-already-exists', err)) //if error, error message is emitted back
         })
 
+        //NO io.emit needed front end should call refresh-project
+        socket.on('delete-project', (projectName) => {
+            db.deleteProject(projectName)
+                .then(result => {
+                    return
+                })
+                .catch(err => io.emit('error-deleting-project', err))
+        })
+
+        socket.on('edit-project-name', (oldName, newName) => {
+            db.editProjectName(oldName, newName)
+                .then(updatedProject => io.emit('updated-project-name', updatedProject.name))
+                .catch(err => io.emit('error-editing-project-name', err))
+        })
+
         socket.on('add-todo', (projectName, todo) => {
             db.addTodo(projectName, todo)
-                .then(todo => io.emit('added-todo', todo))
+                .then(project => io.emit('added-todo',  getProjectInfo(project)))
                 .catch(err => io.emit('todo-already-exists', err))
         })
 
-        socket.on('toggle-todo', (projectName,todo, status) =>{
-            db.toggleTodo(projectName,todo, status)
-            .then(projectName=>{
-                db.findProject(projectName)//TODO:Not sure if I shoul be emmiting a new fresh project in which the todo was toggled
-                .then(project => io.emit('todo-toggled-inProject',project))
-            })
-            .catch(err => io.emit('todo-toToggle-doesNotExists', err))
+        socket.on('toggle-todo', (projectName, todo, status) => {
+
+            db.toggleTodo(projectName, todo, status)
+
+                .then(project => io.emit('todo-toggled-inProject',  getProjectInfo(project)))
+                .catch(err => io.emit('todo-toToggle-doesNotExists', err))
         })
 
-        socket.on('remove-completed-todos',( projectName) =>{
+        socket.on('delete-todo', (projectName, desc) => {
+
+            db.deleteTodo(projectName, desc)
+                .then(project => io.emit('existing-todos',  getProjectInfo(project)))
+                .catch(err => io.emit('error-on-deletion-ofTodo', err))
+        })
+
+        socket.on('edit-todo', (projectName, oldDesc, newDesc) => {
+            db.editTodo(projectName, oldDesc, newDesc)
+                .then(project => io.emit('updated-todo',  getProjectInfo(project)))
+                .catch(err => io.emit('error-updating-todo', err))
+        })
+
+        socket.on('remove-completed-todos', (projectName) => {
             db.removeCompletedTodos(projectName)
-            .then(project => io.emit('completed-todos', project)) //TODO: Not sure if I should emit the whole project or just todos
-            .catch(err => io.emit('no-completed-todos',err))
+                .then(project => io.emit('completed-todos', getProjectInfo(project)))
+                .catch(err => io.emit('no-completed-todos', err))
         })
 
     })
+
 }
