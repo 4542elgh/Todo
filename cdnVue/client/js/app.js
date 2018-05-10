@@ -1,4 +1,4 @@
-import { projectComponent } from './components.js';
+import { projectComponent } from './components.js'
 
 let socket = io()
 const app = new Vue({
@@ -10,27 +10,30 @@ const app = new Vue({
         },
         count: 0,
         projects: [],
-
         todoJSON: {},
-        todoPreview:{},
+        todoPreview: {},
         todoInputField: "",
         todoWarning: false,
         show: false
     },
     methods: {
         createProject: function () {
-            let projectCopy = {
-                projectName: this.project.projectName,
-                uniqueId: this.project.uniqueId
-            }
-            this.project.uniqueId = this.count++
-            console.log(projectCopy.uniqueId)
-            this.projects.push(projectCopy)
+            let project = socket.emit('create-project', (this.project.projectName))
+            console.log(project)
             this.project.projectName = ""
         },
         deleteProject: function (index) {
+            // updates list in db
+            socket.emit('delete-project', (this.projects[index].name))
             console.log(this.projects[index])
+
+            // updates list in front-end
             this.projects.splice(index, 1)
+        },
+        showTodos: function (index) {
+            this.show = true
+            this.todoJSON.name = this.projects[index].name
+            this.todoJSON.todos = this.projects[index].todos
         },
         addTodo(todoInputField) { 
             //grabbing input box content, and avoid duplicate entry (space and case insensitive)
@@ -81,24 +84,53 @@ const app = new Vue({
     },
     mounted: function () {
         socket.on('refresh-projects', projects => {
-            this.todoJSON = projects[0]
-            this.todoPreview = this.todoJSON.todos.slice(0,4)
+            // this.todoJSON = projects[0]
+            // this.todoPreview = this.todoJSON.todos.slice(0,4)
+            this.projects = projects
+            console.log(projects)
         })
         socket.on('added-todo', result => {
-            this.todoJSON.todos = result[0].todosInfo
-            let preview = this.todoJSON.todos.slice(0,4)
-            this.todoPreview = preview
+            // this.todoJSON.todos = result[0].todosInfo
+            // let preview = this.todoJSON.todos.slice(0,4)
+            // this.todoPreview = preview
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON.todos = result.todos
+                }
+            }
         })
         socket.on('existing-todos', result => {
-            this.todoJSON.todos = result[0].todosInfo
-            let preview = this.todoJSON.todos.slice(0,4)
-            this.todoPreview = preview
+            // this.todoJSON.todos = result[0].todosInfo
+            // let preview = this.todoJSON.todos.slice(0,4)
+            // this.todoPreview = preview
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON.todos = result.todos
+                }
+            }
         })
 
         socket.on('completed-todos', result => {
-            this.todoJSON.todos = result[0].todosInfo
-            let preview = this.todoJSON.todos.slice(0,4)
-            this.todoPreview = preview
+            // this.todoJSON.todos = result[0].todosInfo
+            // let preview = this.todoJSON.todos.slice(0,4)
+            // this.todoPreview = preview
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON.todos = result.todos
+                }
+            }
+        })
+
+        socket.on('project-created', project => {
+            //  let projectCopy = {
+            //      name: project['name'],
+            //      uniqueId: project['_id']
+            //  }
+            //      console.log(projectCopy.uniqueId)
+             this.projects.push(project)
         })
     }
 })

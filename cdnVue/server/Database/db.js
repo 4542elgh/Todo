@@ -67,8 +67,8 @@ const createProject = (projectName) => {
             //create the project
             return Projects.create(project)
         })
-        .then(({name, todos}) => {
-            return { name, todos }
+        .then(({name, _id, todos}) => {
+            return { name, _id, todos }
         })
         .catch(err => {
             console.log(err)
@@ -86,8 +86,8 @@ const editProjectName = (oldProjectName, newProjectName) => {
         },
         { new: true }
     )
-        .then(({ name, todos}) => {
-            return { name, todos }
+        .then(({ name, _id, todos}) => {
+            return { name, _id, todos }
         })
         .catch(err => {
             console.log(err)
@@ -98,8 +98,8 @@ const editProjectName = (oldProjectName, newProjectName) => {
 //search for a project and delete one project matching the name
 const deleteProject = (projectName) => {
     return Projects.findOneAndRemove({ name: projectName })
-        .then(({ name, todos}) => {
-            return { name, todos }
+        .then(({ name, _id, todos}) => {
+            return { name, _id, todos }
         })
         .catch(err => {
             console.log(err)
@@ -136,8 +136,8 @@ const addTodo = (projectName, description) => {
                 },
                 { new: true }
             )
-                .then(({ name, todos}) => {
-                    return { name, todos }
+                .then(({ name, _id, todos}) => {
+                    return { name, _id, todos }
                 })
         })
         .catch(err => {
@@ -166,8 +166,8 @@ const deleteTodo = (projectName, description) => {
                 },
                 { new: true }
             )
-            .then(({ name, todos}) => {
-                return { name, todos }
+            .then(({ name, _id, todos}) => {
+                return { name, _id, todos }
             })
 
             return true
@@ -200,8 +200,8 @@ const editTodo = (projectName, oldDescription, newDescription) => {
                 },
                 { new: true }
             )
-            .then(({ name, todos}) => {
-                return { name, todos }
+            .then(({ name, _id, todos}) => {
+                return { name, _id, todos }
             })
 
             return true
@@ -235,8 +235,8 @@ const toggleTodo = (projectName, description, status) => {
                 },
                 { new: true }
             )
-                .then(({ name, todos}) => {
-                    return { name, todos }
+                .then(({ name, _id, todos}) => {
+                    return { name, _id, todos }
                 })
         })
         .catch(err => {
@@ -269,8 +269,8 @@ const removeCompletedTodos = (projectName) => {
                 },
                 { new: true }
             )
-            .then(({ name, todos}) => {
-                return { name, todos }
+            .then(({ name, _id, todos}) => {
+                return { name, _id, todos }
             })
 
             return true
@@ -286,6 +286,8 @@ module.exports = {
     allProjects,
     allProjectTodos,
     createProject,
+    deleteProject,
+    editProjectName,
     findProject,
     removeCompletedTodos,
     toggleTodo,
