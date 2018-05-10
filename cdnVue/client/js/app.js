@@ -101,15 +101,27 @@ const app = new Vue({
             }
         })
         socket.on('existing-todos', result => {
-            this.todoJSON.todos = result[0].todosInfo
-            let preview = this.todoJSON.todos.slice(0,4)
-            this.todoPreview = preview
+            // this.todoJSON.todos = result[0].todosInfo
+            // let preview = this.todoJSON.todos.slice(0,4)
+            // this.todoPreview = preview
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON.todos = result.todos
+                }
+            }
         })
 
         socket.on('completed-todos', result => {
-            this.todoJSON.todos = result[0].todosInfo
-            let preview = this.todoJSON.todos.slice(0,4)
-            this.todoPreview = preview
+            // this.todoJSON.todos = result[0].todosInfo
+            // let preview = this.todoJSON.todos.slice(0,4)
+            // this.todoPreview = preview
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON.todos = result.todos
+                }
+            }
         })
 
         socket.on('project-created', project => {
