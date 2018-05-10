@@ -1,19 +1,20 @@
 module.exports = (server, db) => {
     const io = require('socket.io')(server)
+
     //Function for data cleaning
-    const getProjectInfo = project => {
-        const todosInfo = []
-        project.todos.forEach(todo => {
-            todosInfo.push({
-                description: todo.description,
-                status: todo.status
-            })
-        })
-        return [{
-            name: project.name,
-            todosInfo
-        }]
-    }
+    // const getProjectInfo = project => {
+    //     const todosInfo = []
+    //     project.todos.forEach(todo => {
+    //         todosInfo.push({
+    //             description: todo.description,
+    //             status: todo.status
+    //         })
+    //     })
+    //     return [{
+    //         name: project.name,
+    //         todosInfo
+    //     }]
+    // }
 
     io.on('connection', socket => {
 
@@ -45,7 +46,7 @@ module.exports = (server, db) => {
 
         socket.on('add-todo', (projectName, todo) => {
             db.addTodo(projectName, todo)
-                .then(project => io.emit('added-todo',  getProjectInfo(project)))
+                .then(project => io.emit('added-todo',  project))
                 .catch(err => io.emit('todo-already-exists', err))
         })
 
@@ -53,26 +54,26 @@ module.exports = (server, db) => {
 
             db.toggleTodo(projectName, todo, status)
 
-                .then(project => io.emit('todo-toggled-inProject',  getProjectInfo(project)))
+                .then(project => io.emit('todo-toggled-inProject',  project))
                 .catch(err => io.emit('todo-toToggle-doesNotExists', err))
         })
 
         socket.on('delete-todo', (projectName, desc) => {
 
             db.deleteTodo(projectName, desc)
-                .then(project => io.emit('existing-todos',  getProjectInfo(project)))
+                .then(project => io.emit('existing-todos',  project))
                 .catch(err => io.emit('error-on-deletion-ofTodo', err))
         })
 
         socket.on('edit-todo', (projectName, oldDesc, newDesc) => {
             db.editTodo(projectName, oldDesc, newDesc)
-                .then(project => io.emit('updated-todo',  getProjectInfo(project)))
+                .then(project => io.emit('updated-todo',  project))
                 .catch(err => io.emit('error-updating-todo', err))
         })
 
         socket.on('remove-completed-todos', (projectName) => {
             db.removeCompletedTodos(projectName)
-                .then(project => io.emit('completed-todos', getProjectInfo(project)))
+                .then(project => io.emit('completed-todos', project))
                 .catch(err => io.emit('no-completed-todos', err))
         })
 

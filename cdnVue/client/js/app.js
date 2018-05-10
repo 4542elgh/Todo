@@ -30,6 +30,11 @@ const app = new Vue({
             // updates list in front-end
             this.projects.splice(index, 1)
         },
+        showTodos: function (index) {
+            this.show = true
+            this.todoJSON.name = this.projects[index].name
+            this.todoJSON.todos = this.projects[index].todos
+        },
         addTodo(todoInputField) { 
             //grabbing input box content, and avoid duplicate entry (space and case insensitive)
             if (this.todoJSON.length == 0) {
@@ -85,9 +90,15 @@ const app = new Vue({
             console.log(projects)
         })
         socket.on('added-todo', result => {
-            this.todoJSON.todos = result[0].todosInfo
-            let preview = this.todoJSON.todos.slice(0,4)
-            this.todoPreview = preview
+            // this.todoJSON.todos = result[0].todosInfo
+            // let preview = this.todoJSON.todos.slice(0,4)
+            // this.todoPreview = preview
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON.todos = result.todos
+                }
+            }
         })
         socket.on('existing-todos', result => {
             this.todoJSON.todos = result[0].todosInfo
