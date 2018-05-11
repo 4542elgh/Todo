@@ -20,8 +20,7 @@ const projectComponent = {
 
             <div class="mdl-card__menu">
                 <button v-on:click="$emit('delete-project')" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                    <i class="material-icons">delete</i>
-                </button>
+                    <i class="material-icons">delete</i>                </button>
             </div>
         </div>
         <div class="mdl-layout-spacer"></div>
