@@ -62,34 +62,50 @@
         <!---------- To-Do View ---------->
         <div v-if="show">
             <div class="container">
+                <div class="mdl-layout-spacer"></div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <div class="input-group mb-3">
+                        <input class="form-control" id="addingToDo" v-model="todoInputField" v-on:keyup.enter="addTodo(todoInputField)">
+                        <label class="mdl-textfield__label" for="addingToDo"> enter new todo </label>
+                    </div>
 
+                </div>
+                <div class="mdl-layout-spacer"></div>
                 <div class="row">
 
-                    <div class="mdl-grid justify-content: center">
-                        
-                        <p v-text="todoJSON.name"></p>
+                    <div v-for="todo in todoJSON.todos">
+                        <div class="mdl-grid justify-content: center">
 
-                        <div class="input-group mb-3">
-                            <input class="form-control" v-model="todoInputField" v-on:keyup.enter="addTodo(todoInputField)">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-warning" v-on:click="archiveTodo(todoJSON.name)">Archive</button>
+
+
+                            <div class="mdl-layout-spacer"></div>
+                            <div class="wide-card mdl-card mdl-shadow--8dp">
+
+                                <div class="mdl-card__title">
+                                    <h2 class="mdl-card__title-text">{{todoJSON.name}}</h2>
+                                </div>
+
+                                <div class="mdl-card__supporting-text">
+
+                                    <label class="custom-control-label" v-text="todo" :class="{done:todo.completed}"></label>
+
+                                </div>
+
+                                <div class="mdl-card__actions mdl-card--border">
+                                    <button v-on:click="" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                        <i class="material-icons">delete</i>
+                                    </button>
+                                </div>
+
+                                <div class="mdl-card__menu">
+
+                                </div>
                             </div>
                         </div>
-
-                        <div class="alert alert-danger" role="alert" v-show="todoWarning">
-                            This is a duplicate entry
-                        </div>
-
-                        <div v-for="todo in todoJSON.todos">
-                            <div>
-                                <input type="checkbox" v-on:click="toggleTodo(todoJSON.name,todo.description,todo.completed)" v-model="todo.completed">
-                                <label class="custom-control-label" v-text="todo" :class="{done:todo.completed}"></label>
-                            </div>
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-danger" v-on:click="deleteTodo(todoJSON.name,todo.description)">Delete Todo</button>
-                        </div>
+                        <div class="mdl-layout-spacer"></div>
                     </div>
                 </div>
+
                 <!-- Close To Do View-->
                 <div class="mdl-cell--middle  mdl-layout-title">
                     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" v-on:click="show = false">

@@ -33,7 +33,17 @@ const app = new Vue({
         showTodos: function (index) {
             this.show = true
             this.todoJSON.name = this.projects[index].name
-            this.todoJSON.todos = this.projects[index].todos
+            this.todoJSON.todos=[]
+            this.projects[index].todos.forEach(item=>{
+                if (item.description==""){
+                }
+                else{
+                    this.todoJSON.todos.push(item.description)
+                }
+            })
+
+            // console.log(this.projects[index].todos)
+            // this.todoJSON.todos = this.projects[index].todos
         },
         addTodo(todoInputField) { 
             //grabbing input box content, and avoid duplicate entry (space and case insensitive)
