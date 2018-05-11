@@ -76,8 +76,6 @@
                     <div v-for="todo in todoJSON.todos">
                         <div class="mdl-grid justify-content: center">
 
-
-
                             <div class="mdl-layout-spacer"></div>
                             <div class="wide-card mdl-card mdl-shadow--8dp">
 
@@ -87,12 +85,12 @@
 
                                 <div class="mdl-card__supporting-text">
 
-                                    <label class="custom-control-label" v-text="todo" :class="{done:todo.completed}"></label>
+                                    <label class="custom-control-label" v-text="todo.description" :class="{done:todo.completed}"></label>
 
                                 </div>
 
                                 <div class="mdl-card__actions mdl-card--border">
-                                    <button v-on:click="" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                    <button type="button" v-on:click="deleteTodo(todoJSON.name,todo.description)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
                                         <i class="material-icons">delete</i>
                                     </button>
                                 </div>
