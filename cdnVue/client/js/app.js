@@ -68,7 +68,7 @@ const app = new Vue({
                     socket.emit('add-todo', this.todoJSON.name, todoInputField)
 
                     this.todoInputField = "" //this will reset the input stickiness
-                    this.warning = false;
+                    this.todoWarning = false;
                 }
             }
         },
@@ -133,7 +133,7 @@ const app = new Vue({
             for(let index = 0; index < this.projects.length; index++) {
                 if(this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
-                    this.todoJSON.todos = result.todos
+                    this.todoJSON = result
                 }
             }
         })

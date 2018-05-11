@@ -69,13 +69,17 @@
                 </div>
             </div>
         </header>
+        <div v-show="todoWarning" class="alert alert-danger" role="alert">
+            Duplicate Todo, please enter another one
+        </div>
         <div class="container">
             <div class="mdl-grid justify-content: center">
                 <div class="mdl-layout-spacer"></div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="addingToDo">
-                    <label class="mdl-textfield__label" for="addingToDo"> enter new todo </label>
+                    <input v-on:keyup.enter="addTodo(todoInputField)" v-model="todoInputField" class="mdl-textfield__input" type="text" id="addingTodo">
+                    <label class="mdl-textfield__label" for="addingTodo"> enter todo description </label>
                 </div>
+
                 <div class="mdl-layout-spacer"></div>
             </div>
         </div>
@@ -97,12 +101,12 @@
                                 <!-- ADD WHAT U WANT INSIDE EACH INDIVIDUAL TODO CARD'S BODY IN HERE-->
                                 <div class="mdl-card__supporting-text">
 
-                                    <label class="custom-control-label" v-text="todo" :class="{done:todo.completed}"></label>
+                                    <label class="custom-control-label" v-text="todo.description" :class="{done:todo.completed}"></label>
 
                                 </div>
                                 <!-- ADD FUNCTION BUTTONS HERE FOR IT TO SHOW ON BOTTOM OF EACH CARD-->
                                 <div class="mdl-card__actions mdl-card--border">
-                                    <button v-on:click="" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                    <button v-on:click="deleteTodo(todoJSON.name,todo.description)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
                                         <i class="material-icons">delete</i>
                                     </button>
                                     <button v-on:click="" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
