@@ -154,7 +154,7 @@
                                         <label class="mdl-checkbox mdl-js-checkbox" for="checkbox1">
                                             <input type="checkbox" v-on:click="toggleTodo(todoJSON.name,todo.description,todo.completed)" id="checkbox1" class="mdl-checkbox__input" :checked="todo.completed">
                                             <span class="mdl-checkbox__label">
-                                                <!--use this if u want a lable-->
+                                                <!--use this if u want a label-->
                                             </span>
                                         </label>
                                     </div>
@@ -168,8 +168,9 @@
                 </div>
                 <!-- Close To Do View-->
                 <div class="mdl-cell--middle  mdl-layout-title">
+                    <br><br>
                     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" v-on:click="show = false">
-                        Return To Projects List
+                        Return To Project List
                     </button>
                     <button id="show-modal" @click="toggleTodoModal()" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
                         <i class="material-icons">archive</i>
