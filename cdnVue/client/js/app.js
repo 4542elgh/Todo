@@ -1,9 +1,9 @@
-import { projectComponent} from './components.js'
+import {projectComponent} from './components.js'
 
 let socket = io()
 Vue.component('modal', {
     template: '#modal-template'
-  })
+})
 const app = new Vue({
     el: '#app',
     data: {
@@ -16,8 +16,8 @@ const app = new Vue({
         todoJSON: {},
         todoPreview: {},
         todoInputField: "",
-        todoEditOldField:"",
-        todoPendingField:"",
+        todoEditOldField: "",
+        todoPendingField: "",
         todoWarning: false,
         show: false,
         showModal: false,
@@ -41,11 +41,11 @@ const app = new Vue({
         showTodos: function (index) {
             this.show = true
             this.todoJSON.name = this.projects[index].name
-            this.todoJSON.todos=[]
-            this.projects[index].todos.forEach(item=>{
-                if (item.description==""){
+            this.todoJSON.todos = []
+            this.projects[index].todos.forEach(item => {
+                if (item.description == "") {
                 }
-                else{
+                else {
                     this.todoJSON.todos.push(item)
                 }
             })
@@ -53,7 +53,7 @@ const app = new Vue({
             // console.log(this.projects[index].todos)
             // this.todoJSON.todos = this.projects[index].todos
         },
-        addTodo(todoInputField) { 
+        addTodo(todoInputField) {
             //grabbing input box content, and avoid duplicate entry (space and case insensitive)
             if (this.todoJSON.length == 0) {
                 socket.emit('add-todo', (this.todoJSON.name, todoInputField))
@@ -63,7 +63,7 @@ const app = new Vue({
                 let isDup = false;
 
                 this.todoJSON.todos.forEach(item => {
-                    if (item.description.toLowerCase().replace(/\s/g, '') == todoInputField.toLowerCase().replace(/\s/g, '')){
+                    if (item.description.toLowerCase().replace(/\s/g, '') == todoInputField.toLowerCase().replace(/\s/g, '')) {
                         isDup = true
                     }
                 })
@@ -80,36 +80,35 @@ const app = new Vue({
                 }
             }
         },
-        editTodo (projectName,oldDescription,newDescription) {
-            if(oldDescription==newDescription){
-                this.todoWarning=true;
-            }else{
-                this.todoWarning=false
-                this.todoModalField=""
-                this.showModal=false
-                socket.emit('edit-todo', projectName, oldDescription,newDescription)
-                socket.emit('toggle-todo',projectName,oldDescription,false)
-
+        editTodo(projectName, oldDescription, newDescription) {
+            if (oldDescription == newDescription) {
+                this.todoWarning = true;
+            } else {
+                this.todoWarning = false
+                this.todoModalField = ""
+                this.showModal = false
+                socket.emit('edit-todo', projectName, oldDescription, newDescription)
+                socket.emit('toggle-todo', projectName, oldDescription, false)
             }
         },
-        toggleTodo (projectName, todo, status) {
+        toggleTodo(projectName, todo, status) {
             this.todoJSON.todos.forEach(item => {
-                if (item.description == todo){
-                    item.completed =! status
+                if (item.description == todo) {
+                    item.completed = !status
                 }
             })
             socket.emit('toggle-todo', projectName, todo, !status)
         },
-        archiveTodo(projectName){
+        archiveTodo(projectName) {
             socket.emit('remove-completed-todos', projectName)
         }
         ,
-        deleteTodo (projectName,description) {
+        deleteTodo(projectName, description) {
             console.log("i reach here")
             socket.emit('delete-todo', projectName, description)
         },
-        toggleTodoModal(description){
-            this.showModal=!this.showModal
+        toggleTodoModal(description) {
+            this.showModal = !this.showModal
             this.todoModalField = description
             this.todoEditOldField = description
         }
@@ -129,10 +128,10 @@ const app = new Vue({
             // let preview = this.todoJSON.todos.slice(0,4)
             // this.todoPreview = preview
 
-            for(let index = 0; index < this.projects.length; index++) {
-                if(this.projects[index].name === result.name) {
+            for (let index = 0; index < this.projects.length; index++) {
+                if (this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
-                    this.todoJSON=result
+                    this.todoJSON = result
                 }
             }
         })
@@ -141,13 +140,13 @@ const app = new Vue({
             // let preview = this.todoJSON.todos.slice(0,4)
             // this.todoPreview = preview
 
-            if(result==null){
-                this.todoJSON={}
-            }else{
-                for(let index = 0; index < this.projects.length; index++) {
-                    if(this.projects[index].name === result.name) {
+            if (result == null) {
+                this.todoJSON = {}
+            } else {
+                for (let index = 0; index < this.projects.length; index++) {
+                    if (this.projects[index].name === result.name) {
                         this.projects[index].todos = result.todos
-                        this.todoJSON= result
+                        this.todoJSON = result
                     }
                 }
             }
@@ -159,41 +158,41 @@ const app = new Vue({
             // let preview = this.todoJSON.todos.slice(0,4)
             // this.todoPreview = preview
 
-            if(result==null){
-                this.todoJSON={}
-            }else{
-            for(let index = 0; index < this.projects.length; index++) {
-                if(this.projects[index].name === result.name) {
-                    this.projects[index].todos = result.todos
-                    this.todoJSON = result
+            if (result == null) {
+                this.todoJSON = {}
+            } else {
+                for (let index = 0; index < this.projects.length; index++) {
+                    if (this.projects[index].name === result.name) {
+                        this.projects[index].todos = result.todos
+                        this.todoJSON = result
+                    }
                 }
-            }
             }
         })
 
         socket.on('updated-todo', result => {
-            if(result==null){
-                this.todoJSON={}
-            }else{
-            for(let index = 0; index < this.projects.length; index++) {
-                if(this.projects[index].name === result.name) {
-                    this.projects[index].todos = result.todos
-                    this.todoJSON = result
+            if (result == null) {
+                this.todoJSON = {}
+            } else {
+                for (let index = 0; index < this.projects.length; index++) {
+                    if (this.projects[index].name === result.name) {
+                        this.projects[index].todos = result.todos
+                        this.todoJSON = result
+                    }
                 }
-            }
             }
         })
 
         socket.on('todo-toggled-inProject', result => {
-            if(result==null){
-                this.todoJSON={}
-            }else{
-            for(let index = 0; index < this.projects.length; index++) {
-                if(this.projects[index].name === result.name) {
-                    this.projects[index].todos = result.todos
-                    this.todoJSON = result
+            if (result == null) {
+                this.todoJSON = {}
+            } else {
+                for (let index = 0; index < this.projects.length; index++) {
+                    if (this.projects[index].name === result.name) {
+                        this.projects[index].todos = result.todos
+                        this.todoJSON = result
+                    }
                 }
-            }
             }
         })
 
@@ -204,7 +203,7 @@ const app = new Vue({
             //      uniqueId: project['_id']
             //  }
             //      console.log(projectCopy.uniqueId)
-             this.projects.push(project)
+            this.projects.push(project)
         })
     }
 })
