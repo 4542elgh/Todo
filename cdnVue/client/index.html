@@ -51,7 +51,7 @@
 
                 <!------ Delete Button ---------->
                 <div class="col-sm rowPadding3" v-for="(project, index) in projects" :key="project['_id']">
-                    <project-component v-on:delete-project="deleteProject(index)" v-on:open-project="showTodos(index)" v-on:update="editProjectName(index)"
+                    <project-component v-on:delete-project="deleteProject(index)" v-on:open-project="showTodos(index)"
                         :projectname="project.name" :uniqueid="project['_id']" :todos="project.todos" :projectindex="index">
                     </project-component>
                 </div>

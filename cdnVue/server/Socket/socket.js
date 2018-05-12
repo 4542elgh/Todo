@@ -39,9 +39,7 @@ module.exports = (server, db) => {
         })
 
         socket.on('edit-project-name', (oldName, newName) => {
-            console.log(`socket old: ${oldName}, socket new: ${newName}`)
             db.editProjectName(oldName, newName)
-            // switch back to just updatedProject
                 .then(updatedProject => io.emit('updated-project-name', updatedProject))
                 .catch(err => io.emit('error-editing-project-name', err))
         })

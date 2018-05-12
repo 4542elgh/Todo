@@ -78,7 +78,6 @@ const createProject = (projectName) => {
 
 //search for a matching project name and update it to the new project name
 const editProjectName = (oldProjectName, newProjectName) => {
-    console.log(`old: ${oldProjectName}, new: ${newProjectName}`)
     return Projects.findOneAndUpdate({ name: oldProjectName },
         {
             $set: {

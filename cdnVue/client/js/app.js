@@ -31,20 +31,9 @@ const app = new Vue({
             this.projects.splice(index, 1)
         },
         editProjectName: function (index, projectName) {
-            // console.log(`index: ${index}, projectName: ${projectName}`)
-            // console.log(`currentName: ${this.projects[index].name}`)
             let oldName = this.projects[index].name
             let newName = projectName
-            console.log(`old: ${oldName}, new: ${newName}`)
-            // for (let i = 0; i < this.projects.length; i++) {
-            //     if (i === index) {
-            //         this.projects[i].name = projectName
-            //         console.log('after l-36.app')
-            //         socket.emit('edit-project-name', (this.projects[i].name, projectName))
-            //     }
-            // }
-            // socket.emit('edit-project-name', (this.projects[index].name, projectName))
-            socket.emit('edit-project-name', (oldName, newName))
+            socket.emit('edit-project-name', oldName, newName)
         },
         showTodos: function (index) {
             this.show = true
