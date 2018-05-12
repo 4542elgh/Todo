@@ -16,11 +16,11 @@ const app = new Vue({
         todoJSON: {},
         todoPreview: {},
         todoInputField: "",
-        todoModalField:"",
+        todoEditOldField:"",
+        todoPendingField:"",
         todoWarning: false,
         show: false,
         showModal: false,
-        showModal:false,
 
 
     },
@@ -80,7 +80,18 @@ const app = new Vue({
                 }
             }
         },
-        editTodo () {},
+        editTodo (projectName,oldDescription,newDescription) {
+            if(oldDescription==newDescription){
+                this.todoWarning=true;
+            }else{
+                this.todoWarning=false
+                this.todoModalField=""
+                this.showModal=false
+                socket.emit('edit-todo', projectName, oldDescription,newDescription)
+                socket.emit('toggle-todo',projectName,oldDescription,false)
+
+            }
+        },
         toggleTodo (projectName, todo, status) {
             this.todoJSON.todos.forEach(item => {
                 if (item.description == todo){
@@ -100,6 +111,7 @@ const app = new Vue({
         toggleTodoModal(description){
             this.showModal=!this.showModal
             this.todoModalField = description
+            this.todoEditOldField = description
         }
     },
     components: {
@@ -134,7 +146,6 @@ const app = new Vue({
                     this.todoJSON= result
                 }
             }
-
             console.log(this.todoJSON)
         })
 
@@ -149,6 +160,25 @@ const app = new Vue({
                 }
             }
         })
+
+        socket.on('updated-todo', result => {
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON = result
+                }
+            }
+        })
+
+        socket.on('todo-toggled-inProject', result => {
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON = result
+                }
+            }
+        })
+
 
         socket.on('project-created', project => {
             //  let projectCopy = {

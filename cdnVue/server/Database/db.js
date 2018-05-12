@@ -192,7 +192,7 @@ const editTodo = (projectName, oldDescription, newDescription) => {
             })
 
             // update the project's todos with the new todo list
-            Projects.findOneAndUpdate({ name: projectName },  
+           return Projects.findOneAndUpdate({ name: projectName },
                 {
                     $set: { 
                         todos: cleanTodos
@@ -291,5 +291,6 @@ module.exports = {
     findProject,
     removeCompletedTodos,
     toggleTodo,
-    deleteTodo
+    deleteTodo,
+    editTodo
 }
