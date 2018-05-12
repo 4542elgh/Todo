@@ -136,9 +136,11 @@
                                     <!-- ADD WHAT U WANT INSIDE EACH INDIVIDUAL TODO CARD'S BODY IN HERE-->
                                     <div class="mdl-card__supporting-text centerTheEVERYTHING">
 
-                                        <label class="custom-control-label" :class="{done:todo.completed}">{{todo.description}} </label>
+                                        <!--<label class="custom-control-label" :class="{done:todo.completed}">{{todo.description}} </label>-->
+                                        <label :class="{done:todo.completed}">{{todo.description}} </label>
 
                                     </div>
+
                                     <!-- ADD FUNCTION BUTTONS HERE FOR IT TO SHOW ON BOTTOM OF EACH CARD-->
                                     <div class="mdl-card__actions mdl-card--border centerTheEVERYTHING">
                                         <button v-on:click="deleteTodo(todoJSON.name,todo.description)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
@@ -196,6 +198,9 @@
     }
     .mdl-textfield__label{
         margin-bottom:0px;
+    }
+    .mdl-card.min-height{
+
     }
 </style>
 
