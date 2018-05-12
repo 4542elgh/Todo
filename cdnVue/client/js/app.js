@@ -140,10 +140,15 @@ const app = new Vue({
             // this.todoJSON.todos = result[0].todosInfo
             // let preview = this.todoJSON.todos.slice(0,4)
             // this.todoPreview = preview
-            for(let index = 0; index < this.projects.length; index++) {
-                if(this.projects[index].name === result.name) {
-                    this.projects[index].todos = result.todos
-                    this.todoJSON= result
+
+            if(result==null){
+                this.todoJSON={}
+            }else{
+                for(let index = 0; index < this.projects.length; index++) {
+                    if(this.projects[index].name === result.name) {
+                        this.projects[index].todos = result.todos
+                        this.todoJSON= result
+                    }
                 }
             }
             console.log(this.todoJSON)
@@ -153,29 +158,42 @@ const app = new Vue({
             // this.todoJSON.todos = result[0].todosInfo
             // let preview = this.todoJSON.todos.slice(0,4)
             // this.todoPreview = preview
+
+            if(result==null){
+                this.todoJSON={}
+            }else{
             for(let index = 0; index < this.projects.length; index++) {
                 if(this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
                     this.todoJSON = result
                 }
+            }
             }
         })
 
         socket.on('updated-todo', result => {
+            if(result==null){
+                this.todoJSON={}
+            }else{
             for(let index = 0; index < this.projects.length; index++) {
                 if(this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
                     this.todoJSON = result
                 }
             }
+            }
         })
 
         socket.on('todo-toggled-inProject', result => {
+            if(result==null){
+                this.todoJSON={}
+            }else{
             for(let index = 0; index < this.projects.length; index++) {
                 if(this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
                     this.todoJSON = result
                 }
+            }
             }
         })
 

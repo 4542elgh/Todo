@@ -257,9 +257,6 @@ const removeCompletedTodos = (projectName) => {
                     cleanTodos.push(todo)
             })
 
-            if(cleanTodos.length === 0)
-                throw new Error('No completed todos')
-
             // update the project's todos with the pruned todo list
             return Projects.findOneAndUpdate({ name: projectName },
                 {
