@@ -4,7 +4,7 @@ const projectComponent = {
         <div class="mdl-grid justify-content: center">
         <div class="mdl-layout-spacer"></div>
         <div class="wide-card mdl-card mdl-shadow--8dp">
-            <div class="mdl-card__title">
+            <div class="mdl-card__title centerTheEVERYTHING">
                 <h2 class="mdl-card__title-text">{{ projectname }}</h2>
             </div>
 
@@ -14,7 +14,7 @@ const projectComponent = {
                 </ul>
             </div>
 
-            <div class="mdl-card__actions mdl-card--border">
+            <div class="mdl-card__actions mdl-card--border centerTheEVERYTHING">
                 <a v-on:click="$emit('open-project')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Open {{ projectname }}</a>
             </div>
 

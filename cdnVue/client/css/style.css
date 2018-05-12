@@ -8,6 +8,12 @@
 
 }
 
+.centerTheEVERYTHING {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .modal-mask {
     position: fixed;
     z-index: 9998;
@@ -29,16 +35,17 @@
     width: 500px;
     margin: 10px auto;
     padding: 20px 30px;
-    background-color: rgb(88, 74, 74);
+    background-color: #000000;
     border-radius: 2px;
-    box-shadow: 8 2px 8px rgba(0, 0, 0, .33);
+    box-shadow: 2px 3px #00000050;
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
   }
   
   .modal-header h3 {
     margin-top: 0;
-    color: #42b983;
+    color: #FFFFFF;
+  
   }
   
   .modal-body {
@@ -64,6 +71,13 @@
   
   .modal-leave-active {
     opacity: 100%;
+  }
+
+  .modal-footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
   }
   
   .modal-enter .modal-container,
