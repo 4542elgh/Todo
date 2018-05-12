@@ -1,11 +1,22 @@
 const projectComponent = {
+    data: function () {
+        return {
+             edit: false
+        }
+    },
     template: 
     `
         <div class="mdl-grid justify-content: center">
         <div class="mdl-layout-spacer"></div>
         <div class="wide-card mdl-card mdl-shadow--8dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">{{ projectname }}</h2>
+        <!-- @keyup.enter="edit = false; $emit('update', projectname)"  -->
+        <div class="mdl-card__title">
+                <h2 v-show="edit == false" @dblclick="edit = true" class="mdl-card__title-text">{{ projectname }}</h2>
+                <div v-show="edit == true" class="mdl-textfield mdl-js-textfield">
+                    <input v-on:blur="edit = false" 
+                    @keyup.enter="edit = false; updateProjectName(projectindex, projectname)" 
+                    v-model="projectname" class="mdl-textfield__input" type="text" id="sample1">
+                </div>
             </div>
 
             <div class="mdl-card__supporting-text">
@@ -27,8 +38,12 @@ const projectComponent = {
         <div class="mdl-layout-spacer"></div>
         </div>
     `,
-
-    props: ['projectname', 'uniqueid', 'todos']
+    props: ['projectname', 'uniqueid', 'todos', 'projectindex'],
+    methods: {
+        updateProjectName: function(projectindex, projectname) {
+            this.$parent.editProjectName(projectindex, projectname)
+        }
+    }
 }
 
 export { projectComponent }
