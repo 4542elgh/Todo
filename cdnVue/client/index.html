@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/Material_Design_Lite/material.indigo-pink.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
-          crossorigin="anonymous">
+        crossorigin="anonymous">
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
-            crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <!-------- Libraries End -------->
 
     <link rel="stylesheet" href="css/style.css">
@@ -22,128 +22,136 @@
 </head>
 
 <body>
-<div id="app">
+    <div id="app">
 
-    <!------- Header ------------>
-    <div v-if="!show">
-        <header class="mdl-layout__header">
-            <div class="mdl-grid">
-                <div class="mdl-cell--middle  mdl-layout-title">
-                    <h1>TODO PROJECTS</h1>
-                </div>
-            </div>
-        </header>
-
-        <!--------- Project Name Input Box ------------>
-
-        <div class="container">
-            <div class="mdl-grid justify-content: center">
-                <div class="mdl-layout-spacer"></div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input v-on:keyup.enter="createProject()" v-model="project.projectName" class="mdl-textfield__input" type="text" id="sample3">
-                    <label class="mdl-textfield__label" for="sample3"> enter project name </label>
-                </div>
-                <div class="mdl-layout-spacer"></div>
-            </div>
-        </div>
-
-        <!---------- Project Cards ------------>
-        <div class="container">
-            <div class="row">
-
-                <!------ Delete Button ---------->
-                <div class="col-sm rowPadding3" v-for="(project, index) in projects" :key="project['_id']">
-                    <project-component v-on:delete-project="deleteProject(index)" v-on:open-project="showTodos(index)" :projectname="project.name"
-                                       :uniqueid="project['_id']" :todos="project.todos">
-                    </project-component>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!---------- To-Do View ---------->
-    <div v-if="show">
-        <header class="mdl-layout__header">
-            <div class="mdl-grid">
-                <div class="mdl-cell--middle  mdl-layout-title">
-                    <h1>{{todoJSON.name}}</h1>
-                </div>
-            </div>
-        </header>
-        <div v-show="todoWarning" class="alert alert-danger" role="alert">
-            Duplicate Todo, please enter another one
-        </div>
-        <div class="container">
-            <div class="mdl-grid justify-content: center">
-                <div class="mdl-layout-spacer"></div>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input v-on:keyup.enter="addTodo(todoInputField)" v-model="todoInputField" class="mdl-textfield__input" type="text" id="addingTodo">
-                    <label class="mdl-textfield__label" for="addingTodo"> enter todo description </label>
-                </div>
-
-                <div class="mdl-layout-spacer"></div>
-            </div>
-        </div>
-
-        <div class="container">
-
-            <div class="row">
-                <div v-for="(todo,index) in todoJSON.todos">
-                    <div class="col-sm rowPadding3">
-
-                        <div class="mdl-grid justify-content: center">
-                            <div class="mdl-layout-spacer"></div>
-
-                            <div class="wide-card mdl-card mdl-shadow--8dp">
-
-                                <div class="mdl-card__title">
-                                    <h2 class="mdl-card__title-text">{{todoJSON.name}} Item:{{index+1}}</h2>
-                                </div>
-                                <!-- ADD WHAT U WANT INSIDE EACH INDIVIDUAL TODO CARD'S BODY IN HERE-->
-                                <div class="mdl-card__supporting-text">
-
-                                    <label class="custom-control-label" :class="{done:todo.completed}">{{todo.description}} </label>
-
-                                </div>
-                                <!-- ADD FUNCTION BUTTONS HERE FOR IT TO SHOW ON BOTTOM OF EACH CARD-->
-                                <div class="mdl-card__actions mdl-card--border">
-                                    <button v-on:click="deleteTodo(todoJSON.name,todo.description)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                                        <i class="material-icons">delete</i>
-                                    </button>
-                                    <button id="show-modal" @click="showModal = true" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                                        <i class="material-icons">edit</i>
-                                    </button>
-                                    <!-- MODAL BOX IS HERE, APPEARS WHEN U CLICK EDIT BOTTON-->
-                                    <modal v-if="showModal" @close="showModal = false">
-                                        <label slot="body" class="custom-control-label" :class="{done:todo.completed}">{{todo.description}} </label>
-                                        <h3 slot="header">{{todoJSON.name}}</h3>
-                                      </modal>
-                                </div>
-                                <!-- ADD BUTTONS HERE FOR IT TO SHOW ON TOP OF EACH CARD-->
-                                <div class="mdl-card__menu">
-                                    <label class="mdl-checkbox mdl-js-checkbox" for="checkbox1">
-                                        <input type="checkbox" id="checkbox1" class="mdl-checkbox__input">
-                                        <span class="mdl-checkbox__label">
-                                                <!--use this if u want a lable-->
-                                            </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="mdl-layout-spacer"></div>
-
-                        </div>
+        <!------- Header ------------>
+        <div v-if="!show">
+            <header class="mdl-layout__header">
+                <div class="mdl-grid">
+                    <div class="mdl-cell--middle  mdl-layout-title">
+                        <h1>TODO PROJECTS</h1>
                     </div>
                 </div>
+            </header>
 
+            <!--------- Project Name Input Box ------------>
+
+            <div class="container">
+                <div class="mdl-grid justify-content: center">
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input v-on:keyup.enter="createProject()" v-model="project.projectName" class="mdl-textfield__input" type="text" id="sample3">
+                        <label class="mdl-textfield__label" for="sample3"> enter project name </label>
+                    </div>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
             </div>
-            <!-- Close To Do View-->
-            <div class="mdl-cell--middle  mdl-layout-title">
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" v-on:click="show = false">
-                    Return To Projects List
-                </button>
+
+            <!---------- Project Cards ------------>
+            <div class="container">
+                <div class="row">
+
+                    <!------ Delete Button ---------->
+                    <div class="col-sm rowPadding3" v-for="(project, index) in projects" :key="project['_id']">
+                        <project-component v-on:delete-project="deleteProject(index)" v-on:open-project="showTodos(index)" :projectname="project.name"
+                            :uniqueid="project['_id']" :todos="project.todos">
+                        </project-component>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---------- To-Do View ---------->
+        <div v-if="show">
+            <header class="mdl-layout__header">
+                <div class="mdl-grid">
+                    <div class="mdl-cell--middle  mdl-layout-title">
+                        <h1>{{todoJSON.name}}</h1>
+                    </div>
+                </div>
+            </header>
+            <div v-show="todoWarning" class="alert alert-danger" role="alert">
+                Duplicate Todo, please enter another one
+            </div>
+            <div class="container">
+                <div class="mdl-grid justify-content: center">
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input v-on:keyup.enter="addTodo(todoInputField)" v-model="todoInputField" class="mdl-textfield__input" type="text" id="addingTodo">
+                        <label class="mdl-textfield__label" for="addingTodo"> enter todo description </label>
+                    </div>
+
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+            </div>
+
+            <div class="container">
+
+                <div class="row">
+                    <div v-for="(todo,index) in todoJSON.todos">
+                        <div class="col-sm rowPadding3">
+
+                            <div class="mdl-grid justify-content: center">
+                                <div class="mdl-layout-spacer"></div>
+
+                                <div class="wide-card mdl-card mdl-shadow--8dp">
+
+                                    <div class="mdl-card__title">
+                                        <h2 class="mdl-card__title-text">{{todoJSON.name}} Item:{{index+1}}</h2>
+                                    </div>
+                                    <!-- ADD WHAT U WANT INSIDE EACH INDIVIDUAL TODO CARD'S BODY IN HERE-->
+                                    <div class="mdl-card__supporting-text">
+
+                                        <label class="custom-control-label" :class="{done:todo.completed}">{{todo.description}} </label>
+
+                                    </div>
+                                    <!-- ADD FUNCTION BUTTONS HERE FOR IT TO SHOW ON BOTTOM OF EACH CARD-->
+                                    <div class="mdl-card__actions mdl-card--border">
+                                        <button v-on:click="deleteTodo(todoJSON.name,todo.description)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                        <button id="show-modal" @click="showModal = true" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                        <!-- MODAL BOX IS HERE, APPEARS WHEN U CLICK EDIT BOTTON-->
+
+                                        <modal v-if="showModal" @close="showModal = false">
+                                            <div class="container">
+                                                <div slot="body" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                                    <input v-on:keyup.enter="" v-model="todoInputField" class="mdl-textfield__input" type="text" id="editToDo">
+                                                    <label class="mdl-textfield__label" for="">edit todo label input box</label>
+                                                </div>
+
+                                                <h3 slot="header">{{todoJSON.name}}</h3>
+                                            </div>
+                                        </modal>
+                                    </div>
+
+                                    <!-- ADD BUTTONS HERE FOR IT TO SHOW ON TOP OF EACH CARD-->
+                                    <div class="mdl-card__menu">
+                                        <label class="mdl-checkbox mdl-js-checkbox" for="checkbox1">
+                                            <input type="checkbox" id="checkbox1" class="mdl-checkbox__input">
+                                            <span class="mdl-checkbox__label">
+                                                <!--use this if u want a lable-->
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mdl-layout-spacer"></div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Close To Do View-->
+                <div class="mdl-cell--middle  mdl-layout-title">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" v-on:click="show = false">
+                        Return To Projects List
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 </body>
 

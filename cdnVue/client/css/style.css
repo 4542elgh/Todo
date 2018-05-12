@@ -26,12 +26,12 @@
   }
   
   .modal-container {
-    width: 300px;
-    margin: 0px auto;
+    width: 500px;
+    margin: 10px auto;
     padding: 20px 30px;
-    background-color: #fff;
+    background-color: rgb(88, 74, 74);
     border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+    box-shadow: 8 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
   }
@@ -63,7 +63,7 @@
   }
   
   .modal-leave-active {
-    opacity: 0;
+    opacity: 100%;
   }
   
   .modal-enter .modal-container,
