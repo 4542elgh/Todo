@@ -87,8 +87,8 @@ const app = new Vue({
                 this.todoWarning = false
                 this.todoModalField = ""
                 this.showModal = false
-                socket.emit('edit-todo', projectName, oldDescription, newDescription)
                 socket.emit('toggle-todo', projectName, oldDescription, false)
+                socket.emit('edit-todo', projectName, oldDescription, newDescription)
             }
         },
         toggleTodo(projectName, todo, status) {

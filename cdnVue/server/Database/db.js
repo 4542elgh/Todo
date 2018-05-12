@@ -223,9 +223,6 @@ const toggleTodo = (projectName, description, status) => {
                     searchId = todo['_id']
             })
 
-            if(searchId === '')
-                throw new Error('Todo does not exist')
-
             // update the completed status of todo matching the searchId
             return Projects.findOneAndUpdate({ name: projectName, 'todos._id': searchId },
                 {
