@@ -1,4 +1,4 @@
-import { projectComponent } from './components.js'
+import { projectComponent} from './components.js'
 
 let socket = io()
 Vue.component('modal', {
@@ -16,9 +16,12 @@ const app = new Vue({
         todoJSON: {},
         todoPreview: {},
         todoInputField: "",
+        todoModalField:"",
         todoWarning: false,
         show: false,
-        showModal: false
+        showModal: false,
+        showModal:false,
+
 
     },
     methods: {
@@ -93,6 +96,10 @@ const app = new Vue({
         deleteTodo (projectName,description) {
             console.log("i reach here")
             socket.emit('delete-todo', projectName, description)
+        },
+        toggleTodoModal(description){
+            this.showModal=!this.showModal
+            this.todoModalField = description
         }
     },
     components: {
