@@ -9,8 +9,8 @@ const projectComponent = {
             </div>
 
             <div class="mdl-card__supporting-text">
-                <ul v-for="todo in todos">
-                    <li>{{ todo.description }}</li>
+                <ul v-for="todo in todosFill">
+                    <li :class="{done:todo.completed}">{{ todo.description }}</li>
                 </ul>
             </div>
 
@@ -20,15 +20,28 @@ const projectComponent = {
 
             <div class="mdl-card__menu">
                 <button v-on:click="$emit('delete-project')" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                    <i class="material-icons">delete</i>
-                </button>
+                    <i class="material-icons">delete</i>                </button>
             </div>
         </div>
         <div class="mdl-layout-spacer"></div>
         </div>
     `,
 
-    props: ['projectname', 'uniqueid', 'todos']
+    props: ['projectname', 'uniqueid', 'todos'],
+    computed:{
+        todosFill(){
+            if(this.todos.length<4){
+               const difference = 4-this.todos.length;
+               for(let i =0;i<difference;i++){
+                   this.todos.push({description:''})
+               }
+               return this.todos
+            }
+            else{
+                return this.todos.slice(0,4)
+            }
+        }
+    }
 }
 
 export { projectComponent }

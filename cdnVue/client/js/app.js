@@ -1,6 +1,9 @@
 import { projectComponent } from './components.js'
 
 let socket = io()
+Vue.component('modal', {
+    template: '#modal-template'
+  })
 const app = new Vue({
     el: '#app',
     data: {
@@ -14,7 +17,9 @@ const app = new Vue({
         todoPreview: {},
         todoInputField: "",
         todoWarning: false,
-        show: false
+        show: false,
+        showModal: false
+
     },
     methods: {
         createProject: function () {
@@ -33,7 +38,17 @@ const app = new Vue({
         showTodos: function (index) {
             this.show = true
             this.todoJSON.name = this.projects[index].name
-            this.todoJSON.todos = this.projects[index].todos
+            this.todoJSON.todos=[]
+            this.projects[index].todos.forEach(item=>{
+                if (item.description==""){
+                }
+                else{
+                    this.todoJSON.todos.push(item)
+                }
+            })
+
+            // console.log(this.projects[index].todos)
+            // this.todoJSON.todos = this.projects[index].todos
         },
         addTodo(todoInputField) { 
             //grabbing input box content, and avoid duplicate entry (space and case insensitive)
@@ -58,7 +73,7 @@ const app = new Vue({
                     socket.emit('add-todo', this.todoJSON.name, todoInputField)
 
                     this.todoInputField = "" //this will reset the input stickiness
-                    this.warning = false;
+                    this.todoWarning = false;
                 }
             }
         },
@@ -76,6 +91,7 @@ const app = new Vue({
         }
         ,
         deleteTodo (projectName,description) {
+            console.log("i reach here")
             socket.emit('delete-todo', projectName, description)
         }
     },
@@ -93,10 +109,11 @@ const app = new Vue({
             // this.todoJSON.todos = result[0].todosInfo
             // let preview = this.todoJSON.todos.slice(0,4)
             // this.todoPreview = preview
+
             for(let index = 0; index < this.projects.length; index++) {
                 if(this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
-                    this.todoJSON.todos = result.todos
+                    this.todoJSON=result
                 }
             }
         })
@@ -107,9 +124,11 @@ const app = new Vue({
             for(let index = 0; index < this.projects.length; index++) {
                 if(this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
-                    this.todoJSON.todos = result.todos
+                    this.todoJSON= result
                 }
             }
+
+            console.log(this.todoJSON)
         })
 
         socket.on('completed-todos', result => {
@@ -119,7 +138,7 @@ const app = new Vue({
             for(let index = 0; index < this.projects.length; index++) {
                 if(this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
-                    this.todoJSON.todos = result.todos
+                    this.todoJSON = result
                 }
             }
         })
