@@ -43,6 +43,20 @@ const projectComponent = {
         updateProjectName: function(projectindex, projectname) {
             this.$parent.editProjectName(projectindex, projectname)
         }
+    },
+    computed:{
+        todosFill(){
+            if(this.todos.length<4){
+               const difference = 4-this.todos.length;
+               for(let i =0;i<difference;i++){
+                   this.todos.push({description:''})
+               }
+               return this.todos
+            }
+            else{
+                return this.todos.slice(0,4)
+            }
+        }
     }
 }
 

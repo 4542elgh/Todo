@@ -31,10 +31,11 @@ const app = new Vue({
             this.projects.splice(index, 1)
         },
         editProjectName: function (index, projectName) {
-            console.log(`index: ${index}, projectName: ${projectName}`)
-            console.log(`currentName: ${this.projects[index].name}`)
-            let tempOld = this.projects[index].name
-            let tempNew = projectName
+            // console.log(`index: ${index}, projectName: ${projectName}`)
+            // console.log(`currentName: ${this.projects[index].name}`)
+            let oldName = this.projects[index].name
+            let newName = projectName
+            console.log(`old: ${oldName}, new: ${newName}`)
             // for (let i = 0; i < this.projects.length; i++) {
             //     if (i === index) {
             //         this.projects[i].name = projectName
@@ -43,12 +44,22 @@ const app = new Vue({
             //     }
             // }
             // socket.emit('edit-project-name', (this.projects[index].name, projectName))
-            socket.emit('edit-project-name', (tempOld, tempNew))
+            socket.emit('edit-project-name', (oldName, newName))
         },
         showTodos: function (index) {
             this.show = true
             this.todoJSON.name = this.projects[index].name
-            this.todoJSON.todos = this.projects[index].todos
+            this.todoJSON.todos=[]
+            this.projects[index].todos.forEach(item=>{
+                if (item.description==""){
+                }
+                else{
+                    this.todoJSON.todos.push(item)
+                }
+            })
+
+            // console.log(this.projects[index].todos)
+            // this.todoJSON.todos = this.projects[index].todos
         },
         addTodo(todoInputField) { 
             //grabbing input box content, and avoid duplicate entry (space and case insensitive)
