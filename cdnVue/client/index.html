@@ -129,7 +129,7 @@
                                     <!-- ADD BUTTONS HERE FOR IT TO SHOW ON TOP OF EACH CARD-->
                                     <div class="mdl-card__menu">
                                         <label class="mdl-checkbox mdl-js-checkbox" for="checkbox1">
-                                            <input type="checkbox" v-on:click="toggleTodo(todoJSON.name,todo.description,todo.completed)" id="checkbox1" class="mdl-checkbox__input">
+                                            <input type="checkbox" v-on:click="toggleTodo(todoJSON.name,todo.description,todo.completed)" id="checkbox1" class="mdl-checkbox__input" :checked="todo.completed">
                                             <span class="mdl-checkbox__label">
                                                 <!--use this if u want a lable-->
                                             </span>

@@ -10,7 +10,7 @@ const projectComponent = {
 
             <div class="mdl-card__supporting-text">
                 <ul v-for="todo in todosFill">
-                    <li>{{ todo.description }}</li>
+                    <li :class="{done:todo.completed}">{{ todo.description }}</li>
                 </ul>
             </div>
 
