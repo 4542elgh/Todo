@@ -44,4 +44,4 @@ const projectComponent = {
     }
 }
 
-export { projectComponent }
+export { projectComponent}
