@@ -1,6 +1,9 @@
 import { projectComponent } from './components.js'
 
 let socket = io()
+Vue.component('modal', {
+    template: '#modal-template'
+  })
 const app = new Vue({
     el: '#app',
     data: {
@@ -14,7 +17,9 @@ const app = new Vue({
         todoPreview: {},
         todoInputField: "",
         todoWarning: false,
-        show: false
+        show: false,
+        showModal: false
+
     },
     methods: {
         createProject: function () {
