@@ -23,6 +23,39 @@
 
 <body>
     <div id="app">
+        <div v-if="showModal" @close="showModal = false">
+            <transition name="modal">
+                <div class="modal-mask">
+                    <div class="modal-wrapper">
+                        <div class="modal-container">
+
+                            <div class="modal-header centerTheEVERYTHING">
+                                <slot name="header">
+                                    <h3 slot="header">{{todoJSON.name}}</h3>
+                                </slot>
+                            </div>
+
+                            <div style="background-color: white">
+                                <slot name="body" style="background-color:white">
+
+                                    <input v-on:keyup.enter="editTodo(todoJSON.name,todoEditOldField,todoModalField)"  v-model="todoModalField" class="mdl-textfield__input" type="text" >
+
+                                </slot>
+                            </div>
+
+                            <div class="modal-footer">
+                                <slot name="footer">
+
+                                    <button class="modal-default-button" @click="showModal=false">
+                                        Close
+                                    </button>
+                                </slot>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </div>
 
         <!------- Header ------------>
         <header class="mdl-layout__header">
@@ -76,15 +109,54 @@
                             This is a duplicate entry
                         </div>
 
-                        <div v-for="todo in todoJSON.todos">
-                            <div>
-                                <input type="checkbox" v-on:click="toggleTodo(todoJSON.name,todo.description,todo.completed)" v-model="todo.completed">
-                                <label class="custom-control-label" v-text="todo" :class="{done:todo.completed}"></label>
+                                    <div class="mdl-card__title centerTheEVERYTHING">
+                                        <h2 class="mdl-card__title-text">{{todoJSON.name}} Item:{{index+1}}</h2>
+                                    </div>
+                                    <!-- ADD WHAT U WANT INSIDE EACH INDIVIDUAL TODO CARD'S BODY IN HERE-->
+                                    <div class="mdl-card__supporting-text centerTheEVERYTHING">
+
+                                        <!--<label class="custom-control-label" :class="{done:todo.completed}">{{todo.description}} </label>-->
+                                        <label :class="{done:todo.completed}">{{todo.description}} </label>
+
+                                    </div>
+
+                                    <!-- ADD FUNCTION BUTTONS HERE FOR IT TO SHOW ON BOTTOM OF EACH CARD-->
+                                    <div class="mdl-card__actions mdl-card--border centerTheEVERYTHING">
+                                        <button v-on:click="deleteTodo(todoJSON.name,todo.description)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                        <button id="show-modal" @click="toggleTodoModal(todo.description)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
+
+                                    <!-- ADD BUTTONS HERE FOR IT TO SHOW ON TOP OF EACH CARD-->
+                                    <div class="mdl-card__menu">
+                                        <label class="mdl-checkbox mdl-js-checkbox" for="checkbox1">
+                                            <input type="checkbox" v-on:click="toggleTodo(todoJSON.name,todo.description,todo.completed)" id="checkbox1" class="mdl-checkbox__input" :checked="todo.completed">
+                                            <span class="mdl-checkbox__label">
+                                                <!--use this if u want a label-->
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mdl-layout-spacer"></div>
+
                             </div>
                             <button type="button" class="btn btn-primary">Edit</button>
                             <button type="button" class="btn btn-danger" v-on:click="deleteTodo(todoJSON.name,todo.description)">Delete Todo</button>
                         </div>
                     </div>
+                </div>
+                <!-- Close To Do View-->
+                <div class="mdl-cell--middle  mdl-layout-title">
+                    <br><br>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" v-on:click="show = false">
+                        Return To Project List
+                    </button>
+                    <button id="show-modal" @click="archiveTodo(todoJSON.name)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                        <i class="material-icons">archive</i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -102,6 +174,12 @@
 <style>
     .done {
         text-decoration: line-through;
+    }
+    .mdl-textfield__label{
+        margin-bottom:0px;
+    }
+    .mdl-card.min-height{
+
     }
 </style>
 
