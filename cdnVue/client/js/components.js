@@ -1,7 +1,9 @@
 const projectComponent = {
+    props: ['projectname', 'uniqueid', 'todos', 'projectindex'],
     data: function () {
         return {
-             edit: false
+             edit: false,
+             name: this.projectname
         }
     },
     template: 
@@ -9,13 +11,13 @@ const projectComponent = {
         <div class="mdl-grid justify-content: center">
         <div class="mdl-layout-spacer"></div>
         <div class="wide-card mdl-card mdl-shadow--8dp">
-        <!-- @keyup.enter="edit = false; $emit('update', projectname)"  -->
+        <!-- @keyup.enter="edit = false; $emit('update', name)"  -->
         <div class="mdl-card__title">
-                <h2 v-show="edit == false" @dblclick="edit = true" class="mdl-card__title-text">{{ projectname }}</h2>
+                <h2 v-show="edit == false" @dblclick="edit = true" class="mdl-card__title-text">{{ name }}</h2>
                 <div v-show="edit == true" class="mdl-textfield mdl-js-textfield">
                     <input v-on:blur="edit = false" 
-                    @keyup.enter="edit = false; updateProjectName(projectindex, projectname)" 
-                    v-model="projectname" class="mdl-textfield__input" type="text" id="sample1">
+                    @keyup.enter="edit = false; updateProjectName(projectindex, name)" 
+                    v-model="name" class="mdl-textfield__input" type="text" id="sample1">
                 </div>
             </div>
 
@@ -26,7 +28,7 @@ const projectComponent = {
             </div>
 
             <div class="mdl-card__actions mdl-card--border centerTheEVERYTHING">
-                <a v-on:click="$emit('open-project')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Open {{ projectname }}</a>
+                <a v-on:click="$emit('open-project')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Open {{ name }}</a>
             </div>
 
             <div class="mdl-card__menu">
@@ -38,7 +40,6 @@ const projectComponent = {
         <div class="mdl-layout-spacer"></div>
         </div>
     `,
-    props: ['projectname', 'uniqueid', 'todos', 'projectindex'],
     methods: {
         updateProjectName: function(projectindex, projectname) {
             this.$parent.editProjectName(projectindex, projectname)
