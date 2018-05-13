@@ -192,7 +192,7 @@ const editTodo = (projectName, oldDescription, newDescription) => {
             })
 
             // update the project's todos with the new todo list
-            Projects.findOneAndUpdate({ name: projectName },  
+           return Projects.findOneAndUpdate({ name: projectName },
                 {
                     $set: { 
                         todos: cleanTodos
@@ -222,9 +222,6 @@ const toggleTodo = (projectName, description, status) => {
                 if(todo.description === description)
                     searchId = todo['_id']
             })
-
-            if(searchId === '')
-                throw new Error('Todo does not exist')
 
             // update the completed status of todo matching the searchId
             return Projects.findOneAndUpdate({ name: projectName, 'todos._id': searchId },
@@ -257,9 +254,6 @@ const removeCompletedTodos = (projectName) => {
                     cleanTodos.push(todo)
             })
 
-            if(cleanTodos.length === 0)
-                throw new Error('No completed todos')
-
             // update the project's todos with the pruned todo list
             return Projects.findOneAndUpdate({ name: projectName },
                 {
@@ -291,5 +285,6 @@ module.exports = {
     findProject,
     removeCompletedTodos,
     toggleTodo,
-    deleteTodo
+    deleteTodo,
+    editTodo
 }

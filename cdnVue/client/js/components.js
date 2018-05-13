@@ -25,7 +25,7 @@ const projectComponent = {
                 </ul>
             </div>
 
-            <div class="mdl-card__actions mdl-card--border">
+            <div class="mdl-card__actions mdl-card--border centerTheEVERYTHING">
                 <a v-on:click="$emit('open-project')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Open {{ projectname }}</a>
             </div>
 
