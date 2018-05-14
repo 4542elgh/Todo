@@ -1,4 +1,4 @@
-import {projectComponent} from './components.js'
+import { projectComponent} from './components.js'
 
 let socket = io()
 Vue.component('modal', {
@@ -16,27 +16,50 @@ const app = new Vue({
         todoJSON: {},
         todoPreview: {},
         todoInputField: "",
-        todoEditOldField: "",
-        todoPendingField: "",
+        todoModalField:"",
         todoWarning: false,
+        projectWarning: false,
         show: false,
         showModal: false,
-
-
     },
     methods: {
+        containsProjectName: function(name) {
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === name) {
+                    return true
+                } 
+            }
+            return false
+        },
         createProject: function () {
-            let project = socket.emit('create-project', (this.project.projectName))
-            console.log(project)
-            this.project.projectName = ""
+            let name = this.project.projectName
+            if(name.length == 0 || this.containsProjectName(name)) {
+                this.projectWarning = true
+            }
+            else {
+                let project = socket.emit('create-project', (name))
+                this.project.projectName = ""
+                this.projectWarning = false
+            }            
         },
         deleteProject: function (index) {
             // updates list in db
             socket.emit('delete-project', (this.projects[index].name))
-            console.log(this.projects[index])
 
             // updates list in front-end
             this.projects.splice(index, 1)
+        },
+        editProjectName: function (index, projectName) {
+            let name = projectName
+            if(name.length == 0 || this.containsProjectName(name)) {
+                this.projectWarning = true
+            }
+            else {
+                let oldName = this.projects[index].name
+                let newName = projectName
+                socket.emit('edit-project-name', oldName, newName)
+                this.projectWarning = false
+            } 
         },
         showTodos: function (index) {
             this.show = true
@@ -76,7 +99,7 @@ const app = new Vue({
                     socket.emit('add-todo', this.todoJSON.name, todoInputField)
 
                     this.todoInputField = "" //this will reset the input stickiness
-                    this.todoWarning = false;
+                    this.warning = false;
                 }
             }
         },
@@ -118,49 +141,32 @@ const app = new Vue({
     },
     mounted: function () {
         socket.on('refresh-projects', projects => {
-            // this.todoJSON = projects[0]
-            // this.todoPreview = this.todoJSON.todos.slice(0,4)
             this.projects = projects
             console.log(projects)
         })
         socket.on('added-todo', result => {
-            // this.todoJSON.todos = result[0].todosInfo
-            // let preview = this.todoJSON.todos.slice(0,4)
-            // this.todoPreview = preview
-
-            for (let index = 0; index < this.projects.length; index++) {
-                if (this.projects[index].name === result.name) {
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
                     this.projects[index].todos = result.todos
                     this.todoJSON = result
                 }
             }
         })
         socket.on('existing-todos', result => {
-            // this.todoJSON.todos = result[0].todosInfo
-            // let preview = this.todoJSON.todos.slice(0,4)
-            // this.todoPreview = preview
-
-            if (result == null) {
-                this.todoJSON = {}
-            } else {
-                for (let index = 0; index < this.projects.length; index++) {
-                    if (this.projects[index].name === result.name) {
-                        this.projects[index].todos = result.todos
-                        this.todoJSON = result
-                    }
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === result.name) {
+                    this.projects[index].todos = result.todos
+                    this.todoJSON.todos = result.todos
                 }
             }
             console.log(this.todoJSON)
         })
 
         socket.on('completed-todos', result => {
-            // this.todoJSON.todos = result[0].todosInfo
-            // let preview = this.todoJSON.todos.slice(0,4)
-            // this.todoPreview = preview
-
             if (result == null) {
                 this.todoJSON = {}
-            } else {
+            } 
+            else {
                 for (let index = 0; index < this.projects.length; index++) {
                     if (this.projects[index].name === result.name) {
                         this.projects[index].todos = result.todos
@@ -198,12 +204,11 @@ const app = new Vue({
 
 
         socket.on('project-created', project => {
-            //  let projectCopy = {
-            //      name: project['name'],
-            //      uniqueId: project['_id']
-            //  }
-            //      console.log(projectCopy.uniqueId)
-            this.projects.push(project)
+             this.projects.push(project)
+        })
+
+        socket.on('updated-project-name', project => {
+            console.log(project)
         })
     }
 })

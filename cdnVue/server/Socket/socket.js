@@ -40,7 +40,7 @@ module.exports = (server, db) => {
 
         socket.on('edit-project-name', (oldName, newName) => {
             db.editProjectName(oldName, newName)
-                .then(updatedProject => io.emit('updated-project-name', updatedProject.name))
+                .then(updatedProject => io.emit('updated-project-name', updatedProject))
                 .catch(err => io.emit('error-editing-project-name', err))
         })
 
@@ -51,7 +51,6 @@ module.exports = (server, db) => {
         })
 
         socket.on('toggle-todo', (projectName, todo, status) => {
-
             db.toggleTodo(projectName, todo, status)
 
                 .then(project => io.emit('todo-toggled-inProject',  project))
@@ -59,7 +58,6 @@ module.exports = (server, db) => {
         })
 
         socket.on('delete-todo', (projectName, desc) => {
-
             db.deleteTodo(projectName, desc)
                 .then(project => io.emit('existing-todos',  project))
                 .catch(err => io.emit('error-on-deletion-ofTodo', err))

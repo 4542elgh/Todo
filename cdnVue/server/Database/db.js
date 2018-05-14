@@ -86,13 +86,13 @@ const editProjectName = (oldProjectName, newProjectName) => {
         },
         { new: true }
     )
-        .then(({ name, _id, todos}) => {
-            return { name, _id, todos }
-        })
-        .catch(err => {
-            console.log(err)
-            return null
-        })
+    .then(({ name, _id, todos}) => {
+        return { name, _id, todos }
+    })
+    .catch(err => {
+        console.log(err)
+        return null
+    })
 }
 
 //search for a project and delete one project matching the name
@@ -136,9 +136,9 @@ const addTodo = (projectName, description) => {
                 },
                 { new: true }
             )
-                .then(({ name, _id, todos}) => {
-                    return { name, _id, todos }
-                })
+            .then(({ name, _id, todos}) => {
+                return { name, _id, todos }
+            })
         })
         .catch(err => {
             console.log(err)
@@ -232,9 +232,9 @@ const toggleTodo = (projectName, description, status) => {
                 },
                 { new: true }
             )
-                .then(({ name, _id, todos}) => {
-                    return { name, _id, todos }
-                })
+            .then(({ name, _id, todos}) => {
+                return { name, _id, todos }
+            })
         })
         .catch(err => {
             console.log(err)

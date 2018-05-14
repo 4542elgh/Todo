@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <title>[RT] TODO APP</title>
 
@@ -25,7 +24,6 @@
 <body>
     <div id="app">
         <div v-if="showModal" @close="showModal = false">
-
             <transition name="modal">
                 <div class="modal-mask">
                     <div class="modal-wrapper">
@@ -60,41 +58,44 @@
         </div>
 
         <!------- Header ------------>
-        <div v-if="!show">
-            <header class="mdl-layout__header">
-                <div class="mdl-grid">
-                    <div class="mdl-cell--middle  mdl-layout-title">
-                        <h1>TODO PROJECTS</h1>
-                    </div>
-                </div>
-            </header>
-
-            <!--------- Project Name Input Box ------------>
-
-            <div class="container">
-                <div class="mdl-grid justify-content: center">
-                    <div class="mdl-layout-spacer"></div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input v-on:keyup.enter="createProject()" v-model="project.projectName" class="mdl-textfield__input" type="text" id="sample3">
-                        <label class="mdl-textfield__label" for="sample3"> enter project name </label>
-                    </div>
-                    <div class="mdl-layout-spacer"></div>
+        <header class="mdl-layout__header">
+            <div class="mdl-grid">
+                <div class="mdl-cell--middle  mdl-layout-title">
+                    <h1>TODO PROJECTS</h1>
                 </div>
             </div>
+        </header>
 
-            <!---------- Project Cards ------------>
-            <div class="container">
-                <div class="row">
+        <div v-show="projectWarning" class="alert alert-danger" role="alert">
+            Duplicate or empty project name, please enter another one
+        </div>
 
-                    <!------ Delete Button ---------->
-                    <div class="col-sm rowPadding3" v-for="(project, index) in projects" :key="project['_id']">
-                        <project-component v-on:delete-project="deleteProject(index)" v-on:open-project="showTodos(index)" :projectname="project.name"
-                            :uniqueid="project['_id']" :todos="project.todos">
-                        </project-component>
-                    </div>
+        <!--------- Project Name Input Box ------------>
+        <div class="container">
+            <div class="mdl-grid justify-content: center">
+                <div class="mdl-layout-spacer"></div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input v-on:keyup.enter="createProject()" v-model="project.projectName" class="mdl-textfield__input" type="text" id="sample3">
+                    <label class="mdl-textfield__label" for="sample3"> enter project name </label>
+                </div>
+                <div class="mdl-layout-spacer"></div>
+            </div>
+        </div>
+
+        <!---------- Project Cards ------------>
+        <div class="container">
+            <div class="row">
+
+                <!------ Delete Button ---------->
+                <div class="col-sm rowPadding3" v-for="(project, index) in projects" :key="project['_id']">
+                    <project-component v-on:delete-project="deleteProject(index)" v-on:open-project="showTodos(index)"
+                        :projectname="project.name" :uniqueid="project['_id']" :todos="project.todos" :projectindex="index"
+                        :projects="projects">
+                    </project-component>
                 </div>
             </div>
         </div>
+
         <!---------- To-Do View ---------->
         <div v-if="show">
             <header class="mdl-layout__header">
@@ -189,7 +190,6 @@
 <script type="module" src="js/components.js"></script>
 <script type="module" src="js/app.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-
 
 
 <style>
