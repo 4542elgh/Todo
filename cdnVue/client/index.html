@@ -58,6 +58,7 @@
         </div>
 
         <!------- Header ------------>
+        <div v-if="!show">
         <header class="mdl-layout__header">
             <div class="mdl-grid">
                 <div class="mdl-cell--middle  mdl-layout-title">
@@ -95,7 +96,7 @@
                 </div>
             </div>
         </div>
-
+        </div>
         <!---------- To-Do View ---------->
         <div v-if="show">
             <header class="mdl-layout__header">
