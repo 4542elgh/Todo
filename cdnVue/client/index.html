@@ -66,6 +66,10 @@
             </div>
         </header>
 
+        <div v-show="projectWarning" class="alert alert-danger" role="alert">
+            Duplicate or empty project name, please enter another one
+        </div>
+
         <!--------- Project Name Input Box ------------>
         <div class="container">
             <div class="mdl-grid justify-content: center">
@@ -85,7 +89,8 @@
                 <!------ Delete Button ---------->
                 <div class="col-sm rowPadding3" v-for="(project, index) in projects" :key="project['_id']">
                     <project-component v-on:delete-project="deleteProject(index)" v-on:open-project="showTodos(index)"
-                        :projectname="project.name" :uniqueid="project['_id']" :todos="project.todos" :projectindex="index">
+                        :projectname="project.name" :uniqueid="project['_id']" :todos="project.todos" :projectindex="index"
+                        :projects="projects">
                     </project-component>
                 </div>
             </div>

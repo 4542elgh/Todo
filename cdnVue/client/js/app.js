@@ -18,27 +18,50 @@ const app = new Vue({
         todoInputField: "",
         todoModalField:"",
         todoWarning: false,
+        projectWarning: false,
         show: false,
         showModal: false,
     },
     methods: {
+        containsProjectName: function(name) {
+            for(let index = 0; index < this.projects.length; index++) {
+                if(this.projects[index].name === name) {
+                    return true
+                } 
+            }
+            return false
+        },
         createProject: function () {
-            let project = socket.emit('create-project', (this.project.projectName))
-            console.log(project)
-            this.project.projectName = ""
+            let name = this.project.projectName
+            if(name.length == 0 || this.containsProjectName(name)) {
+                this.projectWarning = true
+            }
+            else {
+                console.log('wait')
+                let project = socket.emit('create-project', (name))
+                this.project.projectName = ""
+                this.projectWarning = false
+            }            
         },
         deleteProject: function (index) {
             // updates list in db
             socket.emit('delete-project', (this.projects[index].name))
-            console.log(this.projects[index])
 
             // updates list in front-end
             this.projects.splice(index, 1)
         },
         editProjectName: function (index, projectName) {
-            let oldName = this.projects[index].name
-            let newName = projectName
-            socket.emit('edit-project-name', oldName, newName)
+            let name = projectName
+            if(name.length == 0 || this.containsProjectName(name)) {
+                this.projectWarning = true
+
+            }
+            else {
+                let oldName = this.projects[index].name
+                let newName = projectName
+                socket.emit('edit-project-name', oldName, newName)
+                this.projectWarning = false
+            } 
         },
         showTodos: function (index) {
             this.show = true
