@@ -156,7 +156,7 @@
                                     <div class="mdl-card__menu">
 
 
-                                        <label class="container">
+                                        <label class="container" >
                                             <input type="checkbox" v-on:click="toggleTodo(todoJSON.name,todo.description,todo.completed)" id="checkbox1" :checked="todo.completed">
                                             <span class="checkmark"></span>
                                         </label>
@@ -216,7 +216,7 @@
     }
 
     /* Hide the browser's default checkbox */
-    .container input {
+ #checkbox1 {
         position: absolute;
         opacity: 0;
         cursor: pointer;
