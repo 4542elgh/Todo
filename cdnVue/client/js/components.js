@@ -1,8 +1,9 @@
 const projectComponent = {
-    props: ['projectname', 'uniqueid', 'todos', 'projectindex'],
+    props: ['projectname', 'uniqueid', 'todos', 'projectindex', 'projects'],
     data: function () {
         return {
              edit: false,
+             originalName: this.projectname,
              name: this.projectname
         }
     },
@@ -42,6 +43,16 @@ const projectComponent = {
     `,
     methods: {
         updateProjectName: function(projectindex, projectname) {
+            if(projectname !== '') {
+                for(let index = 0; index < this.projects.length; index++) {
+                    if(this.projects[index].name === projectname) {
+                        this.name = this.originalName
+                    }
+                } 
+            }
+            else {
+                this.name = this.originalName
+            }
             this.$parent.editProjectName(projectindex, projectname)
         }
     },

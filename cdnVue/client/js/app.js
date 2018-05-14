@@ -37,7 +37,6 @@ const app = new Vue({
                 this.projectWarning = true
             }
             else {
-                console.log('wait')
                 let project = socket.emit('create-project', (name))
                 this.project.projectName = ""
                 this.projectWarning = false
@@ -54,7 +53,6 @@ const app = new Vue({
             let name = projectName
             if(name.length == 0 || this.containsProjectName(name)) {
                 this.projectWarning = true
-
             }
             else {
                 let oldName = this.projects[index].name
